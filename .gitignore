@@ -1,6 +1,5 @@
 # app files
 migrations/
-app/config.py
 
 
 # Byte-compiled / optimized / DLL files
