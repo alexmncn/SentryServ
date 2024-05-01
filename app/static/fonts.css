@@ -1,0 +1,8 @@
+.anek-latin-default {
+  font-family: "Anek Latin", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 112.5;
+}

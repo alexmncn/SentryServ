@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <title>REGISTRO</title>
+  <link rel="icon" href="{{ url_for('static', filename='penguin.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles-register.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@125,300&display=swap" rel="stylesheet">
+
+</head>
+<body class="anek-latin-default">
+  <div class="container">
+    <h1>Registro</h1>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <label for="username">Nombre de usuario:</label>
+      {{ form.username(class="form-control") }}
+      <label for="password">Contraseña:</label>
+      {{ form.password(class="form-control") }}
+      <input type="submit" value="Crear cuenta">
+    </form>
+    <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Iniciar sesión</a></p>
+  </div>
+  <div class="error">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+  </div>
+  
+  <footer>
+    <p>Esta página web pertenece a Alejandro M.C. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,173 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0C0910;
+  color: #B8B8D1;
+  font-size: 12px;
+}
+
+/* Banner */
+.banner {
+  background-color: #101019;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 1.5px;
+}
+
+.user-info {
+  display: flex;
+  margin: 15px;
+  align-items: center;
+}
+
+/*p texto banner loged*/
+p {
+  font-size: 14px;
+  margin: 15px;
+}
+
+/* Estilos para el enlace de cierre de sesión */
+.logout-link {
+  display: none; /* Inicialmente, oculta el enlace de cierre de sesión */
+  margin: 15px;
+  color: #B8B8D1;
+  text-decoration: none;
+  background-color: #202031;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.logout-link:hover {
+    background-color: #DC4147;
+    color: #fff;
+}
+
+/* Mostrar el enlace de cierre de sesión cuando se pasa el ratón por encima de <p> */
+.user-info:hover .logout-link {
+  display: flex; /* Muestra el enlace de cierre de sesión al pasar el ratón por encima de <p> */
+}
+
+.user-info p:focus + .logout-link {
+  display: flex;
+}
+
+.botones-banner {
+  display: flex;  
+  margin: 15px;
+}
+
+/* Estilos para el botón login */
+input[value="Iniciar Sesión"],
+input[value="Registrarse"] {
+  background-color: #CF262C;
+  color: white;
+  padding: 10px 20px;
+  width: 150px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap; /* Evita que el texto se desborde */
+  margin: 15px;
+  border-radius: 10px;
+  font-family: inherit;
+  letter-spacing: 1.5px;
+}
+
+input[value="Iniciar Sesión"]:hover,
+input[value="Registrarse"]:hover {     
+  background-color: #DC4147;
+}
+
+/* Estilos para el encabezado */
+.banner h1 {
+  font-size: 30px;
+  color: #B8B8D1; /* Cambia el color del texto del encabezado */
+  margin: 30px;
+}
+
+.banner h1:hover{
+  color: #DC4147;
+}
+
+.container {
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna vertical */
+  justify-content: center; /* Centra verticalmente los elementos */
+  align-items: center; /* Centra horizontalmente los elementos */  
+  margin-top: 30px;
+}
+
+
+/* Estilos para el pie de página */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  color: #616283; /* Cambia el color del texto del pie de página */
+  position: fixed; /* Fija el pie de página */
+  bottom: 0; /* Lo coloca en la parte inferior */
+  width: 100%; /* Ancho completo */
+  font-size: 13px;
+}
+
+/* Estilos para el botón adminer */
+input[value="CINE"],
+input[value="PANEL PRIVADO"],
+input[value="BASE DE DATOS"],
+input[value="ENCENDER PC"]{
+  background-color: #CF262C; /* Cambia el color de fondo del botón */
+  color: white; /* Cambia el color del texto del botón */
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transición de color al pasar el cursor */
+  display: block; /* Convierte el botón en un bloque para centrarlo */
+  margin: 10px auto; /* Centra el botón horizontalmente y agrega separación entre ellos */
+  font-size: 13px; /* Aumenta el tamaño de fuente */
+  width: 200px;
+  white-space: nowrap;
+  border-radius: 10px;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+input[value="PELIS Y SERIES"]:hover,
+input[value="PANEL PRIVADO"]:hover,
+input[value="BASE DE DATOS"]:hover,
+input[value="ENCENDER PC"]:hover{
+  background-color: #DC4147; /* Cambia el color de fondo al pasar el cursor por encima */
+}
+
+.container-estado {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}  
+
+#estado-pc {
+  color: #B8B8D1;
+  background-color: #202031;
+  text-decoration: none;    
+  margin: 10px;
+  padding: 5px 10px; 
+}
+
+#resultado {
+  margin: 10px;
+  font-weight: bold;
+}
+
+
+.error {
+  margin-top: 20px;
+  color: #B8B8D1;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centra horizontalmente los elementos */
+}

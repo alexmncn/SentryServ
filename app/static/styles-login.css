@@ -1,0 +1,84 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0C0910;
+  color: #B8B8D1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 400px;
+  min-width: 350px;
+  text-align: center;
+  padding: 20px;
+  background: #CF262C;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el encabezado */
+.container h1 {
+  font-size: 36px;
+  margin-top: 0;
+}
+
+/* Estilos para los formularios y campos de entrada */
+.container form label {
+  display: block;
+  color: white;
+  margin-top: 10px;
+}
+
+.container form input[type="text"],
+.container form input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.container form input[type="submit"] {
+  background: #DC4147;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+  display: block;
+  margin: 10px auto;
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.container form input[type="submit"]:hover {
+  background: #3C9E93;
+}
+
+/* Estilos para el pie de página */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  color: #616283; /* Cambia el color del texto del pie de página */
+  position: fixed; /* Fija el pie de página */
+  bottom: 0; /* Lo coloca en la parte inferior */
+  width: 100%; /* Ancho completo */
+  font-size: 13px;
+}
+
+.error {
+  margin-top: 20px;
+  color: #B8B8D1;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

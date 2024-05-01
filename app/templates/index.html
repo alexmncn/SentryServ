@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido - AMC web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <link rel="icon" href="{{ url_for('static', filename='penguin.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@112.5,300&display=swap" rel="stylesheet">
+</head>
+<body class="anek-latin-default">
+  <!-- Banner horizontal -->
+  <div class="banner">
+    <h1>A M C</h1>
+
+      {% if current_user.is_authenticated %}
+      <div class="user-info">
+        <p tabindex="0">Bienvenido, {{ current_user.username }}.</p>
+        <a href="/logout" class="logout-link">Cerrar Sesión</a>
+      </div>
+      {% else %}  
+      <div class="botones-banner">
+        <form action="/login" method="GET">
+          <input type="submit" value="Iniciar Sesión">
+        </form>
+    
+        <form action="/register" method="GET">
+          <input type="submit" value="Registrarse">
+        </form>
+      </div>
+    {% endif %}
+  </div>
+ 
+  <div class="container">
+    <form action="/get-movie-web" method="GET">
+      <input type="submit" value="CINE">
+    </form>
+  </div>
+
+  <div class="container">
+    <form action="/panel-privado" method="GET">
+      <input type="submit" value="PANEL PRIVADO">
+    </form>
+  </div>
+
+  <div class="container">
+    <form action="/get-adminer" method="GET">
+      <input type="submit" value="BASE DE DATOS">
+    </form>
+  </div>
+
+  <div class="container">
+    <form action="/pc-on" method="GET">
+      <input type="submit" value="ENCENDER PC">
+    </form>
+  </div>
+
+  <div class="container-estado">
+      <a id="estado-pc" href="javascript:void(0);" onclick="obtenerEstadoPC()">ESTADO PC: </a>
+      <span id="resultado"></span>
+  </div>
+
+  <script>
+    function obtenerEstadoPC() {
+        fetch('/pc-status').then(response => response.text()).then(data => {
+            // Muestra el resultado en el elemento con id resultado
+            document.getElementById('resultado').textContent = data;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+  </script>
+
+  <div class="error">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+  </div>
+  
+  <footer>
+    <p>Esta página web pertenece a Alejandro M.C. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>
