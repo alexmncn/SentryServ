@@ -1,22 +1,27 @@
 """App views."""
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
-blueprint = Blueprint('ini', __name__)
+from app.extensions import login_manager
+from app.forms import LoginForm, RegisterForm
+from app.models import User
+from app.extensions import db
+
+home_bp = Blueprint('home', __name__)
 
 
 @login_manager.user_loader
 def load_user(user_id):
     # Load user by ID.
-    return User.get_by_id(int(user_id))
+    return User.query.get(user_id)
 
 
-@blueprint.route('/', methods=['GET'])
+@home_bp.route('/', methods=['GET'])
 def home():
     # Home page.
     return render_template('index.html')
 
-@blueprint.route('/login/', methods=['GET', 'POST'])
+@home_bp.route('/login/', methods=['GET', 'POST'])
 def login():
     # Login the user.
     form = LoginForm()
@@ -35,26 +40,26 @@ def login():
             #send_notis.send_noti(message, current_user.username)
             
             flash('Has iniciado sesión', 'success')
-            return redirect(url_for("home"))
+            return redirect(url_for("home.home"))
         else:
             flash('Credenciales incorrectas.\nPor favor, inténtalo de nuevo.', 'error')
 
     return render_template('login.html', form=form)
 
 
-@blueprint.route('/logout/')
+@home_bp.route('/logout/')
 @login_required
 def logout():
     # Logout.
     logout_user()
     flash('Has cerrado sesión', 'info')
-    return redirect(url_for('home'))
+    return redirect(url_for('home.home'))
 
 
-@blueprint.route('/register/', methods=['GET', 'POST'])
+@home_bp.route('/register/', methods=['GET', 'POST'])
 def register():
     # Register new user.
-    form = RegistrationForm()
+    form = RegisterForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         username = form.username.data
@@ -64,7 +69,7 @@ def register():
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash ('El nombre de usuario ya está en uso.\nPor favor, elige otro.', 'danger')
-            return redirect(url_for('register'))
+            return redirect(url_for('home.register'))
 
         # Creates the new user instance and set password
         new_user = User(username=username)
@@ -76,10 +81,10 @@ def register():
         flash('¡Te has registrado correctamente! Ahora puedes iniciar sesión.', 'success')
         
         # Send notifitacion
-        message = f"{username} se ha registrado en la web."
-        send_notis.send_noti(message, username)
+        #message = f"{username} se ha registrado en la web."
+        #send_notis.send_noti(message, username)
 
-        return redirect(url_for('login'))
+        return redirect(url_for('home.login'))
 
     return render_template('register.html', form=form)
 

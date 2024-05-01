@@ -1,6 +1,9 @@
 """Forms section."""
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, TextAreaField
+from wtforms.validators import InputRequired, Email, Length
 
-class RegistrationForm(FlaskForm):
+class RegisterForm(FlaskForm):
     username = StringField('Nombre de usuario', validators=[InputRequired()])
     password = PasswordField('Contraseña', validators=[InputRequired()])
 

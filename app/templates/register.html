@@ -23,7 +23,7 @@
       {{ form.password(class="form-control") }}
       <input type="submit" value="Crear cuenta">
     </form>
-    <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Iniciar sesión</a></p>
+    <p>¿Ya tienes una cuenta? <a href="{{ url_for('home.login') }}">Iniciar sesión</a></p>
   </div>
   <div class="error">
     {% with messages = get_flashed_messages() %}
