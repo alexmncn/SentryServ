@@ -1,15 +1,16 @@
 """External views."""
 from flask import Blueprint, redirect 
-from flask_login import login_required
+from flask_login import login_required, current_user
 
+from app.services.pushover_notifications import send_noti
 external_bp = Blueprint('external', __name__)
 
 
 @external_bp.route('/get-adminer')
 @login_required
 def redirigir_a_adminer():
-    #message = f"{current_user.username} ha accedido a Adminer."
-    #send_notis.send_noti(message, current_user.username)
+    message = f"{current_user.username} ha accedido a Adminer."
+    send_noti(message, current_user.username)
     return redirect('/adminer/adminer-4.8.1.php')
 
 
@@ -20,6 +21,6 @@ def redirect_practicas():
 
 @external_bp.route('/get-movie-web')
 def redirect_movie_web():
-    #message = f"{current_user.username} ha accedido a Movie-Web"
-    #send_notis.send_noti(message, current_user.username)
+    message = f"{current_user.username} ha accedido a Movie-Web"
+    send_noti(message, current_user.username)
     return redirect('/movie-web')

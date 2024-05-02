@@ -2,10 +2,10 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
-from app.extensions import login_manager
+from app.extensions import db, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
-from app.extensions import db
+from app.services.pushover_notifications import send_noti
 
 home_bp = Blueprint('home', __name__)
 
@@ -36,8 +36,8 @@ def login():
             # Save ips temporaly
             #check = funciones.save_users_ips(current_user.username)
             # Send notification
-            #message = f"{username} ha iniciado sesión en la web."
-            #send_notis.send_noti(message, current_user.username)
+            message = f"{username} ha iniciado sesión en la web."
+            send_noti(message, current_user.username)
             
             flash('Has iniciado sesión', 'success')
             return redirect(url_for("home.home"))
@@ -81,8 +81,8 @@ def register():
         flash('¡Te has registrado correctamente! Ahora puedes iniciar sesión.', 'success')
         
         # Send notifitacion
-        #message = f"{username} se ha registrado en la web."
-        #send_notis.send_noti(message, username)
+        message = f"{username} se ha registrado en la web."
+        send_noti(message, username)
 
         return redirect(url_for('home.login'))
 
