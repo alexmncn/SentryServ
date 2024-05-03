@@ -1,6 +1,5 @@
 """System funct."""
 import subprocess
-import json
 
 # Execute script/command
 def execute_command(command):
@@ -44,26 +43,36 @@ def get_ram_usage():
     return ram_usage
 
 
-def get_user_ip(username):
-    # Get file path
-    file_path = '/var/www/html/logs/users_ips_log.json'
+# Execute the command and obtain the total CPU usage
+def get_cpu_usage():
+    # Execute the 'sar -u' command and capture the output
+    command = ['sar', '-u', '1', '1']
+    output = execute_command(command)
+    
+    # Get the output lines
+    lines = output.stdout.split('\n')
 
-    try:
-        # Try to load existing file
-        with open(file_path, 'r') as json_file:
-            user_data = json.load(json_file)
-    except (FileNotFoundError, json.decoder.JSONDecodeError):
-        # If file does not exist or is empty, return None
-        return None
+    # Initialize a list to store CPU usage percentages
+    cpu_percentages = []
 
-    # Search for entry corresponding to username
-    for entry in reversed(user_data):
-        if entry["username"] == username:
-            remote_host = entry["data"].get("remote_host", None)
-            return remote_host
+    # Iterate through the lines and extract CPU usage percentages
+    for line in lines:
+        # Split the line into columns
+        columns = line.split()
+        # Check if there are columns and if the first column is 'all'
+        if len(columns) > 0 and columns[1] == 'all':
 
-    # If username not found, return None
-    return None
+            for column in columns[2:7]:
+                # Get the CPU usage percentage and convert it to float
+                cpu_percentage = float(column)
+                # Append the percentage to the list
+                cpu_percentages.append(cpu_percentage)
+
+    # Sum up the CPU usage percentages
+    total_cpu_usage = sum(cpu_percentages)
+
+    # Return the total CPU usage
+    return total_cpu_usage
 
 
 # Get local IP
