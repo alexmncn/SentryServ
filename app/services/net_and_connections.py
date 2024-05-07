@@ -1,5 +1,5 @@
 """Related net and device connections functions."""
-from app.services.system import execute_command, get_local_ip
+from app.services.system import execute_command
 
 def check_device_connection(ip_address):
     try:
