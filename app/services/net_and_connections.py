@@ -61,7 +61,7 @@ def scan_network(ip_range):
 
 
 # Makes a get request to a specific address
-def peticion_get(url):
+def make_get_request(url):
     try:
         # Make request to the url
         response = requests.get(url)
@@ -100,7 +100,7 @@ def pc_on_esp32():
     if current_status == 'Conectado':
         return 'El PC ya está encendido'
     else:
-        code, response = peticion_get(url_web_esp_on)
+        code, response = make_get_request(url_web_esp_on)
 
         if code == 200:
             return 'PC encendido corectamente'
