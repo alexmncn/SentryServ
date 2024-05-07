@@ -1,5 +1,13 @@
 """Related net and device connections functions."""
+import re, requests
+
 from app.services.system import execute_command
+
+from config import ESP32_PC_ON_KEY
+
+ip_pc_piso = '192.168.1.53'
+ip_pc_casa = '192.168.0.12'
+
 
 def check_device_connection(ip_address):
     try:
@@ -32,21 +40,7 @@ def net_detect():
         
     return octet_3 or 1
 
-
-# Check if PC is ON or OFF 
-def pc_status():
-    octect_3 = net_detect()
-    
-    ip_pc_piso = '192.168.1.53'
-    ip_pc_casa = '192.168.0.12'
-    
-    if octect_3 == 0:
-        ip_pc = ip_pc_casa
-    else: ip_pc = ip_pc_piso
-
-    return check_device_connection(ip_pc)
-
-
+# Return the 3rd octet of the network ip.
 def scan_network(ip_range):
     command = f'nmap -sn {ip_range}'
     result = execute_command(command)
@@ -64,3 +58,53 @@ def scan_network(ip_range):
     else:
         print(f'Error: {result.stderr}')
     return hosts_data
+
+
+# Makes a get request to a specific address
+def peticion_get(url):
+    try:
+        # Make request to the url
+        response = requests.get(url)
+            
+        # Check and return the status code of the request
+        if response.status_code == 200:
+            return response.status_code, response
+        else:
+            return response.status_code, f'Error en la solicitud: {response.status_code}'
+    except Exception as e:
+        return None, f'Error en la solicitud: {e}'
+
+
+# Check if PC is ON or OFF 
+def pc_status():
+    octet_3 = net_detect()
+    
+    if octet_3 == 0:
+        ip_pc = ip_pc_casa
+    else: ip_pc = ip_pc_piso
+
+    return check_device_connection(ip_pc)
+
+
+# Power on PC via ESP32 request
+def pc_on_esp32():
+    # Call net_detect funct. to know the 3rd octet of the network ip.
+    octet_3 = net_detect()
+    ip_esp = f'192.168.{octet_3}.100'
+
+    url_web_esp_on = f'http://{ip_esp}/control?secret_class={ESP32_PC_ON_KEY}&on=ON'
+
+    # Check the state of the pc and proceed as follows
+    current_status = pc_status()
+
+    if current_status == 'Conectado':
+        return 'El PC ya está encendido'
+    else:
+        code, response = peticion_get(url_web_esp_on)
+
+        if code == 200:
+            return 'PC encendido corectamente'
+        elif code == None:
+            return response
+        else:
+            return f'No se ha podido encender el PC. {response}: {code}'

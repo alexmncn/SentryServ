@@ -1,6 +1,7 @@
 """System funct."""
 import subprocess
 
+
 # Execute script/command
 def execute_command(command):
     try:
