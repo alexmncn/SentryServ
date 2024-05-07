@@ -10,19 +10,6 @@ def execute_command(command):
         return e.output
 
 
-def check_device_connection(ip_address):
-    try:
-        command = ['ping','-c', '1','-W','1', ip_address]
-        ping = execute_command(command)
-        
-        if "0% packet loss" in ping.stdout:
-            return "Connected"
-        else:
-            return "Disconnected"
-    except ping.CalledProcessError:
-        return "Disconnected"
-
-
 def get_ram_usage():
     command = ['free', '-m']
     
@@ -43,7 +30,7 @@ def get_ram_usage():
     return ram_usage
 
 
-# Execute the command and obtain the total CPU usage
+# Execute the command and get the total CPU usage
 def get_cpu_usage():
     # Execute the 'sar -u' command and capture the output
     command = ['sar', '-u', '1', '1']
@@ -74,21 +61,9 @@ def get_cpu_usage():
     # Return the total CPU usage
     return total_cpu_usage
 
-
-# Get local IP
-def get_local_ip():
-    try:
-        command = ['hostname', '-I']
-        ip = execute_command(command).decode('utf-8').strip()
-        return ip.split()[0]  # Take the first IP address from the list
-    except Exception as e:
-        print("Error getting local IP:", e)
-        return None
-    
-    
-def net_detect():
-    ip = get_local_ip()
-    if ip is not None:
-        octet_3 = int(ip.split('.')[2])
-        
-    return octet_3 or 1
+# Execute the command and get the cpu temp
+def get_cpu_temp():
+    command = 'cat /sys/class/thermal/thermal_zone0/temp'
+    result = execute_command(command)
+    temp = float(result)/1000
+    return temp
