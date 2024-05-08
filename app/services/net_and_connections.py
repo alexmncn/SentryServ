@@ -3,7 +3,7 @@ import re, requests
 
 from app.services.system import execute_command
 
-from config import ESP32_PC_ON_KEY
+from app.config import ESP32_PC_ON_KEY
 
 ip_pc_piso = '192.168.1.53'
 ip_pc_casa = '192.168.0.12'

@@ -1,11 +1,12 @@
 """App views."""
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 
 from app.extensions import db, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
 from app.services.pushover_notifications import send_noti
+from app.services.data import datos_status_tabla5
 
 home_bp = Blueprint('home', __name__)
 
@@ -83,8 +84,13 @@ def register():
         # Send notifitacion
         message = f"{username} se ha registrado en la web."
         send_noti(message, username)
-
         return redirect(url_for('home.login'))
 
     return render_template('register.html', form=form)
+
+
+@home_bp.route('/sensor_data', methods=['GET'])
+def sensor_data():
+   return jsonify(datos_status_tabla5())
+
 

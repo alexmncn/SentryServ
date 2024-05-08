@@ -66,5 +66,5 @@ def get_cpu_usage():
 def get_cpu_temp():
     command = 'cat /sys/class/thermal/thermal_zone0/temp'
     result = execute_command(command)
-    temp = float(result)/1000
+    temp = int(float(result)/1000)
     return temp

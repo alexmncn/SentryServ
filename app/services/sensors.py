@@ -2,20 +2,20 @@
 import time
 from datetime import datetime
 import csv
+from sqlalchemy import desc
 
+from app.extensions import db
 from app.services.net_and_connections import net_detect, make_get_request
 from app.services.pushover_notifications import send_noti
-from app.extensions import db
-from models import SensorData
+from app.models import SensorData
 
-from config import THINKSPEAK_API_KEY
+from app.config import THINKSPEAK_API_KEY
 
 save_sensor_data = True
 
 
 def sensor_data_db():
-    s_data = SensorData.query.filter_by(sensor_name='sensor1').first()
-    print('Error de db')
+    s_data = SensorData.query.filter_by(sensor_name='sensor1').order_by(desc(SensorData.date)).first()
 
     return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
 

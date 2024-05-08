@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import func
 
 from app.services.access_log_db import access_log_table
+from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
+from app.services.sensors import sensor_data_db
 
 
 
@@ -23,7 +25,7 @@ def datos_status_tabla1():
 
 #obtener datos tabla 3 raspberry server
 def datos_status_tabla3():
-    temp = int(float(ejecutar_script('cat /sys/class/thermal/thermal_zone0/temp'))/1000)
+    temp = get_cpu_temp()
     rsp_temp = f'{temp} ºC'
 
     cpu = round(float(get_cpu_usage()), 1)
@@ -67,7 +69,7 @@ def datos_status_tabla5():
         'battery':{'status-data': battery}
     }
     
-    return status_json
+    return status_json or None
 
 
 def last_access_log_query(limit, ip_filter=None):
