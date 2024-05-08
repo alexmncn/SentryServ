@@ -382,7 +382,7 @@ theHarvester==4.5.0
 tinycss2==1.2.1
 tldextract==3.1.2
 tornado==6.4
-tqdm==4.64.1
+tqdm==4.66.3
 traitlets==5.5.0
 translationstring==1.4
 Twisted==23.10.0
