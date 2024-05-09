@@ -24,5 +24,10 @@ def last_sensor_entry(sensor):
 
 @formated_data_bp.route('/last-access-log-entry', methods=['GET'])
 @formated_data_bp.route('/last-access-log-entry/<int:limit>', methods=['GET'])
-def last_access_log_entry(limit=10):
+def last_access_log_query(limit=10):
     return jsonify(data.last_access_log_query(limit))
+
+@formated_data_bp.route('/most-accesses-by-ip-entry', methods=['GET'])
+@formated_data_bp.route('/most-accesses-by-ip-entry/<int:limit>', methods=['GET'])
+def most_accesses_by_ip_query(limit=10):
+    return jsonify(data.most_accesses_by_ip_query(limit))

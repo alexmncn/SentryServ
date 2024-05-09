@@ -1,5 +1,5 @@
 """Data functions."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import func
 
 from app.services.access_log_db import access_log_table, query as access_log_query

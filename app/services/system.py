@@ -59,7 +59,7 @@ def get_cpu_usage():
     # Sum up the CPU usage percentages
     total_cpu_usage = sum(cpu_percentages)
 
-    # Return the total CPU usage1
+    # Return the total CPU usage
     return total_cpu_usage
 
 # Execute the command and get the cpu temp
