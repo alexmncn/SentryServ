@@ -18,6 +18,11 @@ def pc_status():
 def devices_connection_status():
     return jsonify(data.devices_connection_status())
 
-@formated_data_bp.route('/last-sensor-entry', methods=['GET'])
-def last_sensor_entry():
-    return jsonify(data.last_sensor_entry())
+@formated_data_bp.route('/last-sensor-entry/<int:sensor>', methods=['GET'])
+def last_sensor_entry(sensor):
+    return jsonify(data.last_sensor_entry(sensor))
+
+@formated_data_bp.route('/last-access-log-entry', methods=['GET'])
+@formated_data_bp.route('/last-access-log-entry/<int:limit>', methods=['GET'])
+def last_access_log_entry(limit=10):
+    return jsonify(data.last_access_log_query(limit))

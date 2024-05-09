@@ -60,7 +60,7 @@ def on_message(client, userdata, message):
     try:
         insert_sensor_data(sensor_name, temperature, humidity, date, battery_level)
     except:
-        send_noti("Error inserting data into DB from MQTT_Service.")
+        send_noti("Error inserting data into DB from MQTT_Service.", 'default')
 
     # Send notification
     global low_batt

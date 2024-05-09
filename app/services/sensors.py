@@ -14,10 +14,14 @@ from app.config import THINKSPEAK_API_KEY
 save_sensor_data = True
 
 
-def sensor_data_db():
-    s_data = SensorData.query.filter_by(sensor_name='sensor1').order_by(desc(SensorData.date)).first()
+def sensor_data_db(sensor=1):
+    sensor_name=f'sensor{sensor}'
 
-    return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
+    s_data = SensorData.query.filter_by(sensor_name=sensor_name).order_by(desc(SensorData.date)).first()
+    if s_data is not None:
+        return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
+    else:
+        return None
 
 
 

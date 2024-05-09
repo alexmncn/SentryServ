@@ -26,7 +26,7 @@ def check_device_connection(ip_address):
 def get_local_ip():
     try:
         command = ['hostname', '-I']
-        ip = execute_command(command, use_shell=False).stdout.decode('utf-8').strip()
+        ip = execute_command(command, use_shell=False).stdout.strip()
         return ip.split()[0]  # Take the first IP address from the list
     except Exception as e:
         print("Error getting local IP:", e)
