@@ -14,10 +14,10 @@ def server_info():
 def pc_status():
     return jsonify(data.pc_status_info())
 
-@formated_data_bp.route('/devices-connection_status', methods=['GET'])
+@formated_data_bp.route('/devices-connection-status', methods=['GET'])
 def devices_connection_status():
     return jsonify(data.devices_connection_status())
 
-@formated_data_bp.route('/last_sensor_entry', methods=['GET'])
+@formated_data_bp.route('/last-sensor-entry', methods=['GET'])
 def last_sensor_entry():
     return jsonify(data.last_sensor_entry())
