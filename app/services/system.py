@@ -3,9 +3,9 @@ import subprocess
 
 
 # Execute script/command
-def execute_command(command):
+def execute_command(command, use_shell=True):
     try:
-        output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True, encoding="utf-8")
+        output = subprocess.run(command, shell=use_shell, text=True, capture_output=True)
         return output
     except subprocess.CalledProcessError as e:
         return e.output
@@ -35,8 +35,8 @@ def get_ram_usage():
 def get_cpu_usage():
     # Execute the 'sar -u' command and capture the output
     command = ['sar', '-u', '1', '1']
-    output = execute_command(command)
-    
+    output = execute_command(command, shell=False)
+
     # Get the output lines
     lines = output.stdout.split('\n')
 
@@ -49,7 +49,7 @@ def get_cpu_usage():
         columns = line.split()
         # Check if there are columns and if the first column is 'all'
         if len(columns) > 0 and columns[1] == 'all':
-
+            
             for column in columns[2:7]:
                 # Get the CPU usage percentage and convert it to float
                 cpu_percentage = float(column)
@@ -59,12 +59,12 @@ def get_cpu_usage():
     # Sum up the CPU usage percentages
     total_cpu_usage = sum(cpu_percentages)
 
-    # Return the total CPU usage
+    # Return the total CPU usage1
     return total_cpu_usage
 
 # Execute the command and get the cpu temp
 def get_cpu_temp():
     command = 'cat /sys/class/thermal/thermal_zone0/temp'
     result = execute_command(command)
-    temp = int(float(result)/1000)
+    temp = int(float(result.stdout)/1000)
     return temp
