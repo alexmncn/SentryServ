@@ -38,9 +38,16 @@ class Credentials(db.Model):
 # Sensors
 class SensorData(db.Model):
     __tablename__ = "sensor_data"
-    id = db.Column(db.Integer, primary_key=True,)
+    id = db.Column(db.Integer, primary_key=True)
     sensor_name = db.Column(db.String(50))
     temperature = db.Column(db.Float)
     humidity = db.Column(db.Float)
     date = db.Column(db.DateTime, unique=True, default=datetime.now)
     battery_level = db.Column(db.Float)
+
+
+class StaticDevicesIPs(db.Model):
+    __tablename__= "statics_devices_ips"
+    id = db.Column(db.Integer, primary_key=True)
+    device_name = db.Column(db.String(50))
+    device_ip = db.Column(db.String(15))
