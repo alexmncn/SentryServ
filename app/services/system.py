@@ -15,7 +15,7 @@ def get_ram_usage():
     command = ['free', '-m']
     
     # Execute the 'free -m' command and capture the output
-    output = execute_command(command)
+    output = execute_command(command, use_shell=False)
 
     # Get output lines
     lines = output.stdout.split('\n')
@@ -26,7 +26,7 @@ def get_ram_usage():
         columns = line.split()
         # Check if there are columns and if the first column is 'Mem:'
         if len(columns) > 0 and columns[0] == 'Mem:':
-            ram_usage = int(columns[1]) - int(columns[6])
+            ram_usage = int(columns[2])
 
     return ram_usage
 
@@ -35,7 +35,7 @@ def get_ram_usage():
 def get_cpu_usage():
     # Execute the 'sar -u' command and capture the output
     command = ['sar', '-u', '1', '1']
-    output = execute_command(command, shell=False)
+    output = execute_command(command, use_shell=False)
 
     # Get the output lines
     lines = output.stdout.split('\n')
