@@ -5,14 +5,14 @@ from app.services.system import execute_command
 
 from app.config import ESP32_PC_ON_KEY
 
-ip_pc_piso = '192.168.1.53'
+ip_pc_piso = '192.168.1.68'
 ip_pc_casa = '192.168.0.12'
 
 
 def check_device_connection(ip_address):
     try:
         command = ['ping','-c', '1','-W','1', ip_address]
-        ping = execute_command(command)
+        ping = execute_command(command, use_shell=False)
         
         if "0% packet loss" in ping.stdout:
             return "Connected"
@@ -26,7 +26,7 @@ def check_device_connection(ip_address):
 def get_local_ip():
     try:
         command = ['hostname', '-I']
-        ip = execute_command(command).decode('utf-8').strip()
+        ip = execute_command(command, use_shell=False).stdout.decode('utf-8').strip()
         return ip.split()[0]  # Take the first IP address from the list
     except Exception as e:
         print("Error getting local IP:", e)
@@ -35,10 +35,11 @@ def get_local_ip():
     
 def net_detect():
     ip = get_local_ip()
+    octet_3 = 0
     if ip is not None:
         octet_3 = int(ip.split('.')[2])
         
-    return octet_3 or 1
+    return octet_3
 
 # Return the 3rd octet of the network ip.
 def scan_network(ip_range):

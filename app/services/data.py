@@ -4,6 +4,7 @@ from sqlalchemy import func
 
 from app.services.access_log_db import access_log_table
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
+from app.services.net_and_connections import pc_status 
 from app.services.sensors import sensor_data_db
 
 # PENDING DICTIONARY FORMAT - Also the JS
