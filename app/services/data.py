@@ -6,10 +6,10 @@ from app.services.access_log_db import access_log_table
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
 from app.services.sensors import sensor_data_db
 
-
+# PENDING DICTIONARY FORMAT - Also the JS
 
 #obtener_datos_json_tablas
-def datos_status_tabla1():
+def devices_connection_data():
     status_miquel = check_status.miquel()
     status_noe = check_status.noe()
     status_iphone = check_status.iphone()
@@ -24,7 +24,7 @@ def datos_status_tabla1():
 
 
 #obtener datos tabla 3 raspberry server
-def datos_status_tabla3():
+def server_info():
     temp = get_cpu_temp()
     rsp_temp = f'{temp} ºC'
 
@@ -44,7 +44,7 @@ def datos_status_tabla3():
     return status_json
 
 
-def datos_status_tabla4():
+def pc_status_info():
     pc_status_ = pc_status()
     #send_notis.send_noti(pc_stats, 'default')
 
@@ -55,7 +55,7 @@ def datos_status_tabla4():
     return status_json
 
 
-def datos_status_tabla5():
+def last_sensor_entry():
     s_name, temp, humd, date, battery = sensor_data_db()
 
     temp = f'{temp} ºC'

@@ -1,7 +1,7 @@
 """The app module, containing the app factory function."""
 from flask import Flask
 
-from app.routes import home, external
+from app.routes import home, formated_data, external
 from app.extensions import db, migrate, login_manager
 
 
@@ -25,5 +25,6 @@ def register_extensions(app):
 def register_blueprints(app):
     # Register Flask blueprints.
     app.register_blueprint(home.home_bp)
+    app.register_blueprint(formated_data.formated_data_bp)
     app.register_blueprint(external.external_bp)
     return None
