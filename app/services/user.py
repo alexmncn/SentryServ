@@ -1,6 +1,21 @@
 """User related services."""
+from flask import redirect, url_for, flash
+from flask_login import current_user
+from functools import wraps
 import json
 
+
+def user_has_role(role):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+            if current_user.is_authenticated and current_user.role == role:
+                return fn(*args, **kwargs)
+            else:
+                flash("No tienes permiso para acceder a esta página.", "danger")
+                return redirect(url_for('home.home'))
+        return decorated_view
+    return wrapper
 
 def get_user_ip(username):
     # Get file path

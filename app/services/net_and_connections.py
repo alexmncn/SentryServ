@@ -14,7 +14,7 @@ def check_device_connection(ip_address):
         command = ['ping','-c', '1','-W','1', ip_address]
         ping = execute_command(command, use_shell=False)
         
-        if "0% packet loss" in ping.stdout:
+        if "1 received" in ping.stdout:
             return "Connected"
         else:
             return "Disconnected"
@@ -98,7 +98,7 @@ def pc_on_esp32():
     # Check the state of the pc and proceed as follows
     current_status = pc_status()
 
-    if current_status == 'Conectado':
+    if current_status == 'Connected':
         return 'El PC ya está encendido'
     else:
         code, response = make_get_request(url_web_esp_on)

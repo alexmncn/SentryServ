@@ -3,6 +3,7 @@ from flask import Blueprint, redirect
 from flask_login import login_required, current_user
 
 from app.services.pushover_notifications import send_noti
+
 external_bp = Blueprint('external', __name__)
 
 
