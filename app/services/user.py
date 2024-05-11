@@ -4,6 +4,8 @@ from flask_login import current_user
 from functools import wraps
 import json
 
+from app.models import Credentials, User
+
 
 def user_has_role(role):
     def wrapper(fn):
@@ -16,6 +18,7 @@ def user_has_role(role):
                 return redirect(url_for('home.home'))
         return decorated_view
     return wrapper
+
 
 def get_user_ip(username):
     # Get file path
@@ -37,3 +40,7 @@ def get_user_ip(username):
 
     # If username not found, return None
     return None
+
+
+def load_credentials(user_id): 
+    return Credentials.query.join(User).filter(Credentials.user_id == user_id).order_by(Credentials.site).all()

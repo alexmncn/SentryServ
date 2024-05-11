@@ -1,4 +1,5 @@
 """Data functions."""
+from flask_login import current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func
 
@@ -6,8 +7,30 @@ from app.services.access_log_db import access_log_table, query as access_log_que
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
 from app.services.net_and_connections import pc_status 
 from app.services.sensors import sensor_data_db
+from app.services.user import load_credentials
 
 # PENDING DICTIONARY FORMAT - Also the JS
+
+def load_user_credentials():
+    session_user_id = current_user.id
+
+    user_credentials = load_credentials(session_user_id)
+
+    user_credentials_dc = [
+        {
+            "id": credentials.id, 
+            "user_id": credentials.user_id, 
+            "site": credentials.site, 
+            "user": credentials.user, 
+            "email": credentials.email,
+            "password": credentials.password,
+            "description": credentials.description
+        } 
+        for credentials in user_credentials
+    ]
+
+    return user_credentials_dc
+
 
 #obtener_datos_json_tablas
 def devices_connection_data():
