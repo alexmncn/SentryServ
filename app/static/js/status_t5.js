@@ -2,7 +2,7 @@
 $(document).ready(function() {
 function actualizarTabla5() {
   $.ajax({
-    url: "/last-sensor-entry",
+    url: "/last-sensor-entry/1",
     type: "GET",
     dataType: "json",
     success: function(data) {
@@ -25,7 +25,7 @@ function actualizarTabla5() {
 }
 actualizarTabla5();
 // Llamar a la función para actualizar la tabla cada 5000 milisegundos (5 segundos)
-setInterval(actualizarTabla5, 5000);
+setInterval(actualizarTabla5, 60000);
 });
 
 function switch_graficas(event) {

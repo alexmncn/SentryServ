@@ -115,8 +115,8 @@ def last_sensor_entry(limit=10):
             'sensor_name':{'status-data': s_name},
             'temperature':{'status-data': temp},
             'humidity':{'status-data': humd},
-            'date':{'status-data': date},
-            'battery':{'status-data': battery}
+            'battery':{'status-data': battery},
+            'date':{'status-data': date}
         }
     except:
         print('Error')
