@@ -17,7 +17,7 @@ def pc_status():
 
 @formated_data_bp.route('/devices-connection-status', methods=['GET'])
 def devices_connection_status():
-    return jsonify(data.devices_connection_status())
+    return jsonify(data.devices_connection_data())
 
 @formated_data_bp.route('/last-sensor-entry/<int:sensor>', methods=['GET'])
 def last_sensor_entry(sensor):
@@ -33,7 +33,11 @@ def last_access_log_query(limit=10):
 def most_accesses_by_ip_query(limit=10):
     return jsonify(data.most_accesses_by_ip_query(limit))
 
-@formated_data_bp.route('/user/data/credentials')
+@formated_data_bp.route('/net-devices-scan', methods=['GET'])
+def net_devices_scan():
+    return jsonify(data.scan_local_devices())
+
+@formated_data_bp.route('/user/data/credentials', methods=['GET'])
 @login_required
 def user_credentials():
     return jsonify(data.load_user_credentials())

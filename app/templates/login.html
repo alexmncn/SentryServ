@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.7">
     <link rel="icon" href="{{ url_for('static', filename='icons/srv_white_filled.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles-login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@125,300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@125,300&display=swap" rel="stylesheet">
     <title>INICIAR SESIÓN</title>
 </head>
 <body class="anek-latin-default">
@@ -29,7 +29,7 @@
         {% if messages %}
           <ul>
             {% for message in messages %}
-              <li>{{ message }}</li>
+              <p>{{ message }}</p>
             {% endfor %}
           </ul>
         {% endif %}

@@ -41,7 +41,7 @@
   </div>
 
   <div class="container">
-    <form action="/panel-privado" method="GET">
+    <form action="/private-panel" method="GET">
       <input type="submit" value="PANEL PRIVADO">
     </form>
   </div>
@@ -53,7 +53,7 @@
   </div>
 
   <div class="container">
-    <form action="/pc-on" method="GET">
+    <form action="/pc/on" method="GET">
       <input type="submit" value="ENCENDER PC">
     </form>
   </div>
@@ -65,7 +65,7 @@
 
   <script>
     function obtenerEstadoPC() {
-        fetch('/pc-status').then(response => response.text()).then(data => {
+        fetch('/pc/status').then(response => response.text()).then(data => {
             // Muestra el resultado en el elemento con id resultado
             document.getElementById('resultado').textContent = data;
         })
@@ -80,7 +80,7 @@
         {% if messages %}
           <ul>
             {% for message in messages %}
-              <li>{{ message }}</li>
+              <p>{{ message }}</p>
             {% endfor %}
           </ul>
         {% endif %}

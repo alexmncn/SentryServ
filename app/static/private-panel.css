@@ -1,0 +1,159 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #0C0910;
+  background: linear-gradient(45deg, #8359d4, #6753a8, #4376c8, #3a579b); /* Colores para el difuminado */
+background: linear-gradient(262deg, rgba(131,58,180,1) 0%, rgba(232,58,69,1) 51%, rgba(40,13,91,1) 93%);
+background: linear-gradient(254deg, rgba(195,51,60,1) 0%, rgba(67,28,140,1) 53%, rgba(57,26,116,1) 70%, rgba(35,28,46,1) 89%);
+
+  color: #B8B8D1;
+  letter-spacing: 1.5px;
+}
+
+.menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.menu button {
+  background-color: #101019;
+  color: #B8B8D1;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.menu button:hover {
+  color: #DC4147;
+}
+
+
+.list-menu {
+  display: flex;
+  justify-content: space-around;
+  background-color: #101019;
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: #29293a;
+}
+
+.list-menu ul.mostrar {
+  display: block !important; /* Muestra la lista al agregar la clase "mostrar" */
+}
+
+.list-menu ul {
+  display: none; /* Inicialmente, oculta la lista del menú */
+  list-style: none;
+  padding: 0;
+}
+
+.list-menu li {
+  margin-bottom: 10px;
+}
+
+.list-menu a {
+  color: #B8B8D1;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.list-menu a:hover {
+  color: #DC4147;
+}
+
+.contenido {
+  display: flex;
+  padding: 20px;
+  height: 94vh;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.banner {
+  background-color: #101019;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 15px;
+}
+
+.user-info p {
+  font-size: 14px;
+  margin: 0 15px;
+}
+
+.logout-link {
+  display: none;
+  margin: 0 15px;
+  color: #B8B8D1;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 5px 10px;
+  background-color: #202031;
+}
+
+.logout-link:hover {
+  background-color: #DC4147;
+  color: #fff;
+} 
+
+.user-info:hover .logout-link,
+.user-info p:focus + .logout-link {
+  display: flex;
+}
+
+.botones-banner {
+  display: flex;
+  margin: 0 15px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.banner h1 {
+  font-size: 30px;
+  color: #B8B8D1;
+  margin: 30px;
+}
+
+.banner h1:hover{
+  color: #DC4147;
+} 
+
+.banner a{
+  text-decoration: none;
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 10px 0;
+  color: #616283;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 13px;
+  letter-spacing: 0px;
+}
+

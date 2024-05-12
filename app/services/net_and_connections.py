@@ -1,5 +1,5 @@
 """Related net and device connections functions."""
-import re, requests
+import requests
 
 from app.services.system import execute_command
 
@@ -46,19 +46,7 @@ def scan_network(ip_range):
     command = f'nmap -sn {ip_range}'
     result = execute_command(command)
 
-    hosts_data = []
-
-    if result.returncode == 0:
-        # Extract IPs and hostnames using regular names
-        pattern = re.compile(r'Nmap scan report for (.+) \((\d+\.\d+\.\d+\.\d+)\)')
-        matches = pattern.findall(result.stdout)
-
-        for match in enumerate(matches, start=1):
-            host_name, ip = match
-            hosts_data.append({'Host': host_name, 'IP': ip, 'Status':'Activo'})
-    else:
-        print(f'Error: {result.stderr}')
-    return hosts_data
+    return result
 
 
 # Makes a get request to a specific address

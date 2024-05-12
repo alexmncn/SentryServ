@@ -12,7 +12,7 @@ actions_bp = Blueprint('actions', __name__)
 
 
 ##secured pc-on con esp32 // ACTIVA
-@actions_bp.route('/pc-on', methods=['GET','POST'])
+@actions_bp.route('/pc/on', methods=['GET','POST'])
 @user_has_role('admin')
 def pc_on():
     result = pc_on_esp32()

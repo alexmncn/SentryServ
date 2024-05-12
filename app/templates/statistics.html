@@ -1,0 +1,186 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido - AMC web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <link rel="icon" href="{{ url_for('static', filename='penguin.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='statistics.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@112.5,300&display=swap" rel="stylesheet">
+</head>
+<body class="anek-latin-default">
+
+  <main>
+  <div class="container">
+    <h2>PISO</h2>
+    
+    <table border="1" id="tabla-piso">
+      <thead>
+          <tr>
+              <th>Dispositivo</th>
+              <th class="columnaIP">IP</th>
+              <th class="columnaSTATUS">STATUS</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr data-id="miquel">
+              <td class="columnaDispositivo">Miquel</td>
+              <td class="columnaIP">192.168.1.23</td>
+              <td class="columnaSTATUS">STATUS Miquel</td>
+          </tr>
+          <tr data-id="noe">
+              <td class="columnaDispositivo">Noe</td>
+              <td class="columnaIP">192.168.1.30</td>
+              <td class="columnaSTATUS">STATUS Noe</td>
+          </tr>
+          <tr data-id="iphone">
+              <td class="columnaDispositivo">Yo</td>
+              <td class="columnaIP">192.168.1.65</td>
+              <td class="columnaSTATUS">STATUS Yo</td>
+          </tr>
+      </tbody>
+    </table>
+    
+    <button id="scanButton">Escanear Red</button>
+
+    <table border="1" id="scanTable">
+      <thead>
+        <tr>
+            <th>Host</th>
+            <th>IP</th>
+            <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="container">
+    <h2>MI HABITACION</h2>
+
+    <div class="table3-4">
+      <div class="table3">
+        <h3>SERVER - Raspberry</h3>
+        <table border="1" id="tabla3-rsp">
+          <tbody>
+            <tr data-id="temp">
+              <td>Temp</td>
+              <td class="status-data">No data</td>
+            </tr>
+            <tr data-id="cpu-usage">
+              <td>CPU</td>
+              <td class="status-data">No data</td>
+            </tr>
+            <tr data-id="ram-usage">
+              <td>RAM</td>
+              <td class="status-data">No data</td>
+            </tr>
+          </tbody> 
+        </table>
+      </div>
+
+      <div class="table4">
+        <h3>PC - Principal</h3>
+        <table border="1" id="tabla4-pc">
+          <tbody>
+            <tr data-id="pc-status">
+              <td>Estado</td>
+              <td class="status-data">No data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table5_1">
+        <div class="titulo-interruptor">
+          <h3>Sensores</h3>
+          <div id="interruptor" class="interruptor_save_data">
+            <div id="fondo-interruptor" class"">
+              <svg width="14" height="14">
+                <circle id="circulo_interruptor" cx="7" cy="7" r="7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <table border="1" id="tabla5-sens">
+          <tbody>
+            <tr data-id="temperature">
+              <td>Temperatura</td>
+              <td class="status-data">No data</td>
+            </tr>
+            <tr data-id="humidity">
+              <td>Humedad</td>
+              <td class="status-data">No data</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="switch-graficas">
+          <button id="g-boton" class="boton-graficas" onclick="switch_graficas(event)"></button>
+        </div>
+
+        <div id="graficas-temp-humd" class="ocultar">
+          <div class="panel">
+          <iframe id="g-temp" class="graficas" style="" src="https://thingspeak.com/channels/2504602/charts/1?bgcolor=%23101019&color=%23ffffff&dynamic=true&results=1440&timescale=30&title=Temperatura&type=spline&xaxis=Tiempo&yaxis=Grados+%28%C2%BAC%29"></iframe>
+          <iframe id="g-humd" class="graficas" style="" src="https://thingspeak.com/channels/2504602/charts/2?bgcolor=%23101019&color=%23ffffff&dynamic=true&results=1440&timescale=30&title=Humedad&type=line&xaxis=Tiempo&yaxis=%25+Relativa"></iframe>
+          </div>
+        
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>PAGINA WEB</h2>
+
+    <div class="table5">
+    <h3>ULTIMOS ACCESOS</h3>
+    <table border="1" id="sqlTable1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Host</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    </div>
+
+    <div class="table6">
+    <h3>RESUMEN DEL ULTIMO DÍA</h3>
+    <table border="1" id="sqlTable2">
+      <thead>
+        <tr>
+          <th>Nº Accesos</th>
+          <th>Host</th>
+          <th>Fecha último acceso</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+    </div>
+  </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/status.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scan.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/status_t3.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/status_t4.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/status_t5.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/control_save_data_sensor.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sql_last_10_ips.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sql_most_accesses_by_ip.js') }}"></script>
+</body>
+</html>

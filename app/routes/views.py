@@ -2,7 +2,9 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 
-from app.service.user import user_has_role
+from app.services.user import user_has_role
+from app.forms import CredentialsForm
+from app.services.pushover_notifications import send_noti
 
 views_bp = Blueprint('views', __name__)
 
@@ -20,7 +22,7 @@ def private_panel():
 def estadisticas():
     #enviamos notificación
     message = f"{current_user.username} ha accedido a Estadisticas."
-    send_notis.send_noti(message, current_user.username)
+    send_noti(message, current_user.username)
 
     return render_template('statistics.html')
 
@@ -49,4 +51,4 @@ def manage_credentials():
 
         return redirect(url_for(views.manage_credentials))
 
-    return render_template('manage_credentials.html', form=form)
+    return render_template('manage-credentials.html', form=form)

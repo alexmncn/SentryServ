@@ -1,11 +1,13 @@
 """Data functions."""
+
 from flask_login import current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func
+import re
 
 from app.services.access_log_db import access_log_table, query as access_log_query
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
-from app.services.net_and_connections import pc_status 
+from app.services.net_and_connections import check_device_connection, pc_status, net_detect, scan_network
 from app.services.sensors import sensor_data_db
 from app.services.user import load_credentials
 
@@ -32,11 +34,32 @@ def load_user_credentials():
     return user_credentials_dc
 
 
+def scan_local_devices():
+    ip_range = f'192.168.{net_detect()}.0/24'
+    result = scan_network(ip_range)
+
+    hosts_data = []
+
+    if result.returncode == 0:
+        # Extract IPs and hostnames using regular names
+        pattern = re.compile(r'Nmap scan report for (.+) \((\d+\.\d+\.\d+\.\d+)\)')
+        matches = pattern.findall(result.stdout)
+
+        for i, match in enumerate(matches, start=1):
+            host_name, ip = match
+            hosts_data.append({'Host': host_name, 'IP': ip, 'Status':'Activo'})
+    else:
+        print(f'Error: {result.stderr}')
+    return hosts_data
+
+
+
+
 #obtener_datos_json_tablas
 def devices_connection_data():
-    status_miquel = check_status.miquel()
-    status_noe = check_status.noe()
-    status_iphone = check_status.iphone()
+    status_miquel = check_device_connection.miquel()
+    status_noe = check_device_connection.noe()
+    status_iphone = check_device_connection.iphone()
 
     status_json = {
         'miquel': {'columnaSTATUS': status_miquel},

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.7">
+  <link rel="icon" href="{{ url_for('static', filename='penguin.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='private-panel.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@112.5,300&display=swap" rel="stylesheet">
+  <title>Panel de Control</title>
+</head>
+<body class="anek-latin-default">
+  <!-- Banner horizontal -->
+  <header>
+  <div class="banner">
+    <a href="/"><h1>A M C</h1></a>
+
+    <div class="menu">
+      <button id="toggleBtn">&#9776; Menú</button>
+    </div>
+      {% if current_user.is_authenticated %}
+      <div class="user-info">
+        <p tabindex="0">Bienvenido, {{ current_user.username }}.</p>
+        <a href="/logout" class="logout-link">Cerrar Sesión</a>
+      </div>
+      {% else %}
+      <div class="botones-banner">
+        <form action="/login" method="GET">
+          <input type="submit" value="Iniciar Sesión">
+        </form>
+
+        <form action="/register" method="GET">
+          <input type="submit" value="Registrarse">
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="list-menu">
+    <ul>
+      <li><a href="#" onclick="cargarPagina('statistics')">📊 Estadisticas</a></li>
+      <li><a href='#' onclick="cargarPagina('/user/manage-credentials')">🔑 Credenciales</a></li>
+    </ul>
+  </div>
+
+  </header>
+
+  <div class="contenido" id="contenido">
+    <!-- Aquí se incluye la pagina que se seleccione -->
+  </div>
+
+  <footer>
+    <p>Esta página web pertenece a Alejandro M.C. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    document.getElementById('toggleBtn').addEventListener('click', function () {
+      document.querySelector('.list-menu ul').classList.toggle('mostrar');
+    });
+
+    function cargarPagina(paginaURL) {
+      document.getElementById('contenido').innerHTML = `<iframe src="${paginaURL}" width="100%" height="100%" frameborder="0"></iframe>`;
+    }
+  </script>  
+
+</body>
+</html>
+

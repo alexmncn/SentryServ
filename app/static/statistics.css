@@ -1,0 +1,406 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  /*background-color: #0C0910;*/
+  color: #B8B8D1;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  margin-bottom:30;
+  
+}
+
+/* Banner */
+.banner {
+  background-color: #101019;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  margin: 15px;
+  align-items: center;
+}
+
+/*p texto banner loged*/
+p {
+  font-size: 14px;
+  margin: 15px;
+}
+
+/* Estilos para el enlace de cierre de sesión */
+.logout-link {
+  display: none; /* Inicialmente, oculta el enlace de cierre de sesión */
+  margin: 15px;
+  color: #B8B8D1;
+  text-decoration: none;
+  background-color: #202031;
+  font-weight: bold;
+  padding: 5px 10px;
+  justify-content: space-around;
+}
+
+/* Mostrar el enlace de cierre de sesión cuando se pasa el ratón por encima de <p> */
+.user-info:hover .logout-link {
+  display: flex; /* Muestra el enlace de cierre de sesión al pasar el ratón por encima de <p> */
+}
+
+.user-info p:focus + .logout-link {
+  display: flex;
+}
+
+.botones-banner {
+  display: flex;  
+  margin: 15px;
+}
+
+/* Estilos para el botón login */
+input[value="Iniciar Sesión"],
+input[value="Registrarse"] {
+  background-color: #CF262C;
+  color: white;
+  padding: 10px 20px;
+  width: 150px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap; /* Evita que el texto se desborde */
+  margin: 15px;
+}
+
+input[value="Iniciar Sesión"]:hover,
+input[value="Registrarse"]:hover {     
+  background-color: #DC4147;
+}
+
+/* Estilos para el encabezado */
+h1 {
+  font-size: 30px;
+  color: #B8B8D1; /* Cambia el color del texto del encabezado */
+  margin: 30px;
+}
+
+/*Contenido de la pagina, margen para evitar el header*/
+main {
+  margin-top: 96px; /* Ajusta según la altura de tu encabezado */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna vertical */
+  /*justify-content: center; /* Centra verticalmente los elementos */
+  align-items: center; /* Centra horizontalmente los elementos */  
+  margin-top: 50px;
+  text-align: center;
+}
+
+h2 {
+  letter-spacing: 2px;
+  color: white;
+}
+
+h3 {
+  margin-left: 12.5%;
+  font-weight: bold;
+  margin-top: 0px;
+  color: #ffffffba;
+}
+
+@media(max-width: 600px) {
+  h3{
+    font-size: 15px;
+  }
+}
+
+.table3-4 {
+  display: flex;
+  flex-wrap: wrap;
+  width: 86%;
+  text-align: left;
+  align-items: center;
+}
+
+.table3-4 h3 {
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+td.status-data {
+  text-align: center;
+}
+
+.table3,
+.table4,
+.table5_1 {
+  flex: 1 1 400px;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table5,
+.table6 {
+  width: 100%;
+  text-align: left;
+  margin-top: 20px;
+}
+
+/*TABLAS*/
+/*Estilos tablas estadisticas*/
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #101019;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 10px;
+  width: 75%;
+}
+
+/* Estilos para las celdas de encabezado */
+th {
+  background-color: #101019;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Estilo para el borde de la tabla */
+table, th, td {
+  padding: 10px;
+  border-radius: 10px;
+  border-collapse: separate;
+  border: none;
+}
+
+/* Interruptor */
+.titulo-interruptor {
+  display: flex;
+  align-items: center;
+}
+
+.interruptor_save_data {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 3.3px;
+  border-radius: 20px;
+  width: 45px;
+  margin-left: 20px;
+}
+
+.interruptor_save_data svg {
+  cursor: pointer;
+}
+
+.interruptor_save_data circle {
+  cx: 7;
+  cy: 7;
+  r: 7;
+  fill: rgb(231, 76, 60);
+}
+
+
+.interruptor-desactivado svg {
+  animation: moveCircleLeft 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.interruptor-desactivado #fondo-interruptor {
+  height: 14px;
+  background-color: rgba(1, 1, 1, 0.1);
+  border-radius: 20px;
+
+  animation: fondoLeft 0.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.interruptor-activado circle {
+  fill: rgb(128, 231, 101);
+}
+
+.interruptor-activado svg {
+  animation: moveCircleRight 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.interruptor-activado #fondo-interruptor {
+  height: 14px;
+  background-color: rgba(1, 1, 1, 0.1);
+  border-radius: 20px;
+
+  animation: fondoRight 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes moveCircleLeft {
+  0% {
+    transform: translateX(30px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes moveCircleRight {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(30px);
+  }
+}
+
+@keyframes fondoRight {
+  0%{
+    width: 14px;
+  }
+  100%{
+    width: 43px;
+  }
+}
+
+@keyframes fondoLeft {
+  0%{
+    width: 43px;
+  }
+  100%{
+    width: 14px;
+  }
+}
+
+#switch-graficas {
+  display: flex;
+  justify-content: center;
+}
+
+button.boton-graficas {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 3px;
+  width: 50px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: width 0.5s cubic-bezier(0, 0, 0.41, 1);
+}
+
+button.boton-graficas:hover {
+  width: 150px;
+}
+
+.ancho_fijo {
+  width: 150px !important;
+}
+
+#graficas-temp-humd {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#graficas-temp-humd .panel {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 20px 50px;
+  padding: 10px 0px;
+  border-radius: 15px;
+  min-width: 425px;
+}
+
+.graficas {
+  transform: scale(0.9);
+  height: 230px;
+  width: 425px;
+  width: -webkit-fill-available;
+  border: none;
+  border-radius: 10px;
+}
+
+#@media(max-width: 600px){
+  .graficas{
+    transform: scale(0.85);
+  }
+
+  #graficas-temp-humd.contenido{
+    margin: 20px 10px;
+    padding: 0px;
+  }
+
+}
+
+.ocultar {
+  display: none !important;
+}
+
+/*---- errores ----*/
+.error {
+  margin-top: 20px;
+  color: #B8B8D1;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* Estilos para el botón login */
+#scanButton {
+  background-color: #CF262C;
+  color: white;
+  padding: 10px 20px;
+  width: 150px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap; /* Evita que el texto se desborde */
+  margin: 15px;
+}
+
+#scanButton:hover {
+  background-color: #DC4147;
+}
+
+
+
+/* Estilos para el pie de página */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  color: #616283; /* Cambia el color del texto del pie de página */
+  position: fixed; /* Fija el pie de página */
+  bottom: 0; /* Lo coloca en la parte inferior */
+  width: 100%; /* Ancho completo */
+  font-size: 13px;
+}
+
+.resultado {
+  margin: 10px;
+  font-weight: bold;
+}
+
+
+.error {
+  margin-top: 20px;
+  color: #B8B8D1;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centra horizontalmente los elementos */
+}
+
