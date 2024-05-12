@@ -46,8 +46,8 @@ class SensorData(db.Model):
     battery_level = db.Column(db.Float)
 
 
-class StaticDevicesIPs(db.Model):
+class StaticDevices(db.Model):
     __tablename__= "statics_devices_ips"
     id = db.Column(db.Integer, primary_key=True)
-    device_name = db.Column(db.String(50))
-    device_ip = db.Column(db.String(15))
+    name = db.Column(db.String(50))
+    ip = db.Column(db.String(15))

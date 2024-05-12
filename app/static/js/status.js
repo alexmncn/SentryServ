@@ -6,16 +6,22 @@ function actualizarTabla1() {
     type: "GET",
     dataType: "json",
     success: function(data) {
-      // Iterar sobre los datos recibidos
-      Object.keys(data).forEach(function(dispositivo) {
-        // Buscar el elemento de la tabla con el atributo data-id correspondiente
-        var fila = $("#tabla-piso tr[data-id='" + dispositivo + "']");
-        
-        // Actualizar las celdas de IP y STATUS si la fila se encuentra
-        if (fila.length > 0) {
-          fila.find(".columnaSTATUS").text(data[dispositivo]['columnaSTATUS']);
-        }
-      });
+      $('#tabla-piso tbody').empty();
+
+      if (Array.isArray(data)) {
+         // Agregar datos escaneados a la tabla
+         data.forEach(function(device) {
+            $('#tabla-piso tbody').append(
+                `<tr>
+                    <td>${device.name}</td>
+                    <td>${device.IP}</td>
+                    <td>${device.status}</td>
+                </tr>`
+            );
+        });
+      } else {
+        console.error('Error: Datos no válidos recibidos del servidor.');
+      }
     },
     error: function(jqXHR, textStatus, errorThrown) {
       console.log("Error al obtener datos desde Flask:", jqXHR);

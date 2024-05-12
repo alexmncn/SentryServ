@@ -34,8 +34,8 @@ def get_local_ip():
     
     
 def net_detect():
-    ip = get_local_ip()
     octet_3 = 0
+    ip = get_local_ip()
     if ip is not None:
         octet_3 = int(ip.split('.')[2])
         

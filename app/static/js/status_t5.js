@@ -6,7 +6,6 @@ function actualizarTabla5() {
     type: "GET",
     dataType: "json",
     success: function(data) {
-      console.log(data);
       // Iterar sobre los datos recibidos
       Object.keys(data).forEach(function(obj_columna) {
         // Buscar el elemento de la tabla con el atributo data-id correspondiente

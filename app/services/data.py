@@ -10,6 +10,7 @@ from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
 from app.services.net_and_connections import check_device_connection, pc_status, net_detect, scan_network
 from app.services.sensors import sensor_data_db
 from app.services.user import load_credentials
+from app.models import StaticDevices
 
 # PENDING DICTIONARY FORMAT - Also the JS
 
@@ -53,24 +54,21 @@ def scan_local_devices():
     return hosts_data
 
 
-
-
 #obtener_datos_json_tablas
 def devices_connection_data():
-    status_miquel = check_device_connection.miquel()
-    status_noe = check_device_connection.noe()
-    status_iphone = check_device_connection.iphone()
+    static_devices = StaticDevices.query.all()
+    
+    devices_status = []
 
-    status_json = {
-        'miquel': {'columnaSTATUS': status_miquel},
-        'noe': {'columnaSTATUS': status_noe},
-        'iphone': {'columnaSTATUS': status_iphone},
-    }
+    for device in static_devices:
+        status = check_device_connection(device.ip)
+        
+        devices_status.append({'name': device.name, 'IP': device.ip, 'status': status})
 
-    return status_json
+    return devices_status
 
 
-#obtener datos tabla 3 raspberry server
+# Obtener datos tabla 3 raspberry server
 def server_info():
     temp = get_cpu_temp()
     rsp_temp = f'{temp} ºC'
