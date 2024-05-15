@@ -2,7 +2,7 @@
 
 from flask_login import current_user
 from datetime import datetime, timedelta
-from sqlalchemy import func
+from sqlalchemy import func, and_
 import re
 
 from app.services.access_log_db import access_log_table, query as access_log_query
@@ -122,14 +122,22 @@ def last_sensor_entry(limit=10):
     return status_json or None
 
 
-def last_access_log_query(limit=10, ip_filter=None):
+def last_access_log_query(limit=10, ip_filter=None, user_login=False, additonal_columns=None):
     #parametros query
     selects = None
     
     columns = ['id', 'remote_host', 'date']
+
+    if additonal_columns:
+        for column in additonal_columns:
+            columns.append(column)
     
     if ip_filter:
         filter = access_log_table.columns.remote_host != f'{ip_filter}'
+    elif user_login is True:
+        filter1 = access_log_table.columns.request_method = 'POST'
+        filter2 = access_log_table.columns.request_uri = '/login/'
+        filter = and_(filter1, filter2)
     else:
         filter = None
     

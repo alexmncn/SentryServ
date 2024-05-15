@@ -65,9 +65,10 @@
 
   <script>
     function obtenerEstadoPC() {
-        fetch('/pc/status').then(response => response.text()).then(data => {
+        fetch('/pc/status').then(response => response.json()).then(data => {
+            var status = data['pc-status']['status-data'];
             // Muestra el resultado en el elemento con id resultado
-            document.getElementById('resultado').textContent = data;
+            document.getElementById('resultado').textContent = status;
         })
         .catch(error => {
             console.error('Error:', error);

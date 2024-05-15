@@ -5,6 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.extensions import db, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
+from app.services.user import save_user_login_log
 from app.services.pushover_notifications import send_noti
 
 home_bp = Blueprint('home', __name__)
@@ -33,8 +34,9 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             
-            # Save ips temporaly
-            #check = funciones.save_users_ips(current_user.username)
+            # Save login log
+            save_user_login_log(current_user.id)
+
             # Send notification
             message = f"{username} ha iniciado sesión en la web."
             send_noti(message, current_user.username)

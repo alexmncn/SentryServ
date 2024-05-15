@@ -1,8 +1,9 @@
 """Formated data routes. Return data for js Ajax request for the web visualization."""
 from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 
-from app.services import data
+from app.services import data, access_log_db
+from app.services.user import load_temporal_user_ip
 
 formated_data_bp = Blueprint('formated_data', __name__)
 
@@ -26,12 +27,13 @@ def last_sensor_entry(sensor):
 @formated_data_bp.route('/last-access-log-entry', methods=['GET'])
 @formated_data_bp.route('/last-access-log-entry/<int:limit>', methods=['GET'])
 def last_access_log_query(limit=10):
-    return jsonify(data.last_access_log_query(limit))
+    ip_filter = load_temporal_user_ip(current_user.id)
+    return jsonify(access_log_db.last_access_log_query(limit=limit, ip_filter=ip_filter))
 
 @formated_data_bp.route('/most-accesses-by-ip-entry', methods=['GET'])
 @formated_data_bp.route('/most-accesses-by-ip-entry/<int:limit>', methods=['GET'])
 def most_accesses_by_ip_query(limit=10):
-    return jsonify(data.most_accesses_by_ip_query(limit))
+    return jsonify(access_log_db.most_accesses_by_ip_query(limit))
 
 @formated_data_bp.route('/net-devices-scan', methods=['GET'])
 def net_devices_scan():

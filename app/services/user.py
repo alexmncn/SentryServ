@@ -1,10 +1,13 @@
 """User related services."""
 from flask import redirect, url_for, flash
 from flask_login import current_user
+from sqlalchemy import desc
 from functools import wraps
 import json
 
-from app.models import Credentials, User
+from app.extensions import db
+from app.services.access_log_db import last_access_log_query
+from app.models import Credentials, User, UsersLoginLog
 
 
 def user_has_role(role):
@@ -20,26 +23,24 @@ def user_has_role(role):
     return wrapper
 
 
-def get_user_ip(username):
-    # Get file path
-    file_path = '/var/www/html/controlserver/app/logs/users_ips_log.json'
+def save_user_login_log(user_id):
+    # Obtener el último acceso desde la base de datos
+    last_login_access = last_access_log_query(limit=1, user_login=True)
 
-    try:
-        # Try to load existing file
-        with open(file_path, 'r') as json_file:
-            user_data = json.load(json_file)
-    except (FileNotFoundError, json.decoder.JSONDecodeError):
-        # If file does not exist or is empty, return None
-        return None
+    # Verificar si hay resultados
+    if last_login_access:
+        ip_temp = last_login_access[0]['remote_host']
+        date = last_login_access[0]['date']
 
-    # Search for entry corresponding to username
-    for entry in reversed(user_data):
-        if entry["username"] == username:
-            remote_host = entry["data"].get("remote_host", None)
-            return remote_host
+        last_user_login = UsersLoginLog(user_id=user_id, ip=ip_temp, date=date)
 
-    # If username not found, return None
-    return None
+        db.session.add(last_user_login)
+        db.session.commit()
+
+
+def load_temporal_user_ip(user_id):
+    last_user_login = UsersLoginLog.query.filter_by(user_id=user_id).order_by(desc(UsersLoginLog.date)).first()
+    return last_user_login.ip
 
 
 def load_credentials(user_id): 
