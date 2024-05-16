@@ -4,6 +4,7 @@ from flask_login import current_user
 
 from app.services.net_and_connections import pc_on_esp32
 from app.services.user import user_has_role
+from app.services.sensors import mqtt_app_control 
 from app.services.pushover_notifications import send_noti
 
 from app.config import PC_ON_ROUTE 

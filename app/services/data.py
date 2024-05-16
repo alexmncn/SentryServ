@@ -8,7 +8,7 @@ import re
 from app.services.access_log_db import access_log_table, query as access_log_query
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
 from app.services.net_and_connections import check_device_connection, pc_status, net_detect, scan_network
-from app.services.sensors import sensor_data_db
+from app.services.sensors import sensor_data_db, mqtt_app_control
 from app.services.user import load_credentials
 from app.models import StaticDevices
 
@@ -80,27 +80,27 @@ def server_info():
     ram_usage = f'{ram} MB'
 
 
-    status_json = {
+    server_info = {
         'temp': {'status-data': rsp_temp},
         'cpu-usage':{'status-data': cpu_usage},
         'ram-usage':{'status-data': ram_usage},
     }
 
-    return status_json
+    return server_info
 
 
 def pc_status_info():
     pc_status_ = pc_status()
     #send_notis.send_noti(pc_stats, 'default')
 
-    status_json = {
+    status = {
         'pc-status': {'status-data': pc_status_},
     }
     
-    return status_json
+    return status
 
 
-def last_sensor_entry(limit=10):
+def last_sensor_entry(limit=1):
     status_json = None
     try:
         s_name, temp, humd, date, battery = sensor_data_db(limit)
@@ -120,6 +120,21 @@ def last_sensor_entry(limit=10):
         print('Error')
     
     return status_json or None
+
+
+def mqtt_app_status():
+    status = 'error'
+    since_date = 'error'
+
+    status, since_date, since_time = mqtt_app_control('status')
+
+    status_json = {
+        'status': status,
+        'date': since_date,
+        'time': since_time
+    }
+
+    return status_json
 
 
 def last_access_log_query(limit=10, ip_filter=None, user_login=False, additonal_columns=None):

@@ -3,8 +3,11 @@ import time
 from datetime import datetime
 import csv
 from sqlalchemy import desc
+import subprocess
 
+from app.services.user import user_has_role
 from app.extensions import db
+from app.services.system import execute_command
 from app.services.net_and_connections import net_detect, make_get_request
 from app.services.pushover_notifications import send_noti
 from app.models import SensorData
@@ -18,11 +21,71 @@ def sensor_data_db(sensor=1):
     sensor_name=f'sensor{sensor}'
 
     s_data = SensorData.query.filter_by(sensor_name=sensor_name).order_by(desc(SensorData.date)).first()
+    
     if s_data is not None:
         return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
     else:
         return None
 
+
+def mqtt_app_control(action='status', option=None):
+    def status():
+        command = ['systemctl status mqtt_app.service']
+        output = execute_command(command, use_shell=True)
+    
+        status = None
+        since_date = None
+
+        # Extract the data from the output
+        for line in output.stdout.split('\n'):
+            if 'Active:' in line:
+                parts = line.split()
+                status = parts[1] # Second word after 'Active' is the status
+            
+                # Date is after "since"
+                since_index = line.find('since') + len('since')
+                date_time = line[since_index:].strip().split(';')
+            
+                since_date = date_time[0]
+                since_time = date_time[1]
+                break
+        
+        return status, since_date, since_time
+    
+    @user_has_role('admin')
+    def change_status(option):
+        # Filter the action for command
+        if option=='on':
+            option='start'
+        elif option=='off':
+            option='stop'
+        else:
+            return 'Invalid command'
+        
+        # Save the previous status
+        pre_status = status()
+
+        command = [f'sudo systemctl {option} mqtt_app.service']
+
+        # Ejecutar el comando
+        execute_command(command, use_shell=True)        
+        
+        # Save the 'changed' status
+        post_status = status()
+        
+        # Compare and return the result of the action
+        if post_status != pre_status:
+            return 'success'
+        else:
+            return 'error'
+
+    
+    if action=='status':
+        return status()
+    elif action=='change_status':
+        return change_status(option)
+    else:
+        return None
 
 
 

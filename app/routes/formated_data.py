@@ -1,8 +1,8 @@
 """Formated data routes. Return data for js Ajax request for the web visualization."""
-from flask import Blueprint, jsonify
+from flask import Blueprint, redirect, request, jsonify
 from flask_login import login_required, current_user
 
-from app.services import data, access_log_db
+from app.services import data, access_log_db, sensors
 from app.services.user import load_temporal_user_ip
 
 formated_data_bp = Blueprint('formated_data', __name__)
@@ -23,6 +23,15 @@ def devices_connection_status():
 @formated_data_bp.route('/last-sensor-entry/<int:sensor>', methods=['GET'])
 def last_sensor_entry(sensor):
     return jsonify(data.last_sensor_entry(sensor))
+
+@formated_data_bp.route('/mqtt-service/status', methods=['GET'])
+@formated_data_bp.route('/mqtt-service/status/<option>', methods=['GET'])
+def mqtt_service_control(option=None):
+    if option:
+        return sensors.mqtt_app_control('change_status', option)
+        
+    else:
+        return jsonify(data.mqtt_app_status())
 
 @formated_data_bp.route('/last-access-log-entry', methods=['GET'])
 @formated_data_bp.route('/last-access-log-entry/<int:limit>', methods=['GET'])
