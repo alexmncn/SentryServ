@@ -75,9 +75,9 @@ def mqtt_app_control(action='status', option=None):
         
         # Compare and return the result of the action
         if post_status != pre_status:
-            return 'success'
+            return {'action': "success", 'status': post_status[0]}
         else:
-            return 'error'
+            return {'action': "error"}
 
     
     if action=='status':

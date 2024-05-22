@@ -28,7 +28,7 @@ def last_sensor_entry(sensor):
 @formated_data_bp.route('/mqtt-service/status/<option>', methods=['GET'])
 def mqtt_service_control(option=None):
     if option:
-        return sensors.mqtt_app_control('change_status', option)
+        return jsonify(sensors.mqtt_app_control('change_status', option))
         
     else:
         return jsonify(data.mqtt_app_status())

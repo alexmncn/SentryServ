@@ -1,6 +1,7 @@
 """MQTT save to Database service. Executed by system as a '.service'."""
 import sys
 import os
+from datetime import datetime, timedelta
 
 # Get the path of the directory containing the 'app' module
 app_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
@@ -22,6 +23,9 @@ from app.models import SensorData
 from app.config import MQTT_Service
 
 low_batt = False
+very_low_batt = False
+sensor_down_control = {}
+
 
 # MQTT server configuration
 MQTT_HOST = MQTT_Service.HOST
@@ -62,11 +66,23 @@ def on_message(client, userdata, message):
     except:
         send_noti("Error inserting data into DB from MQTT_Service.", 'default')
 
-    # Send notification
-    global low_batt
+    # Check if the battery is low
+    global low_batt, very_low_batt, sensor_down
     if battery_level < 10 and low_batt is False:
-        send_noti(f"Low Battery: {battery_level} %", 'default')
-        low_batt = True
+        send_noti(f"Batería baja en {sensor_name}: {battery_level} %", 'default')
+        low_batt = True 
+    elif battery_level < 5 and very_low_batt is False:
+        send_noti(f"Batería muy baja en {sensor_name}: {battery_level} %", 'default')
+        very_low_batt = True
+ 
+    # Check if the humidity data is 0 (normally means the sensor battery is so low that the sensor cant measure)
+    if humidity == 0:
+        time_treshold = datetime.utcnow() - timedelta(hours=1)
+        if sensor_down_control[sensor_name] is None or sensor_down_control[sensor_name] <= time_treshold:
+            send_noti(f'{sensor_name} está fuera de servicio. Cárgalo.', 'default')
+            sensor_down_control[sensor_name] = datetime.utcnow()
+
+
 
 
 # Function to start MQTT client and subscribe to a topic

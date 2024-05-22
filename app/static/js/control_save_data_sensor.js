@@ -44,7 +44,6 @@ function load_status() {
       } else {
         interruptor.setAttribute( "title", "Parado durante " + response['time']);
       }
-
     }
   });
 }
@@ -56,13 +55,19 @@ document.getElementById("circulo_interruptor").onclick = function() {
 
 function change_status_request(callback){
   var xhr = new XMLHttpRequest();
+  
+  if (current_status == 'active'){
+    new_status = 'off' 
+  } else{
+    new_status = 'on'
+  }
 
-  xhr.open('GET', '/control_save_sensor_data_change_status', true);
+  xhr.open('GET', '/mqtt-service/status/'+ new_status, true);
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE){
       if (xhr.status === 200) {
-        callback(null, xhr.responseText);
+        callback(null, JSON.parse(xhr.responseText));
       } else {
         console.error('La petición falló con estado: ' + xhr.status);
         callback('Error con la petición.')
@@ -79,21 +84,27 @@ function change_status() {
     if (error) {
       console.log("Error 2: ", error);
     }else {
-      current_status = response;
-
-      change_interruptor_status();
+      if (response['action'] == 'success') {
+        current_status = response['status']
+        change_interruptor_status();
+      } else {
+        alert("No se ha podido cambiar el estado del servicio MQTT");
+      }
     }
   });
 }
 
 function change_interruptor_status() {
-  var interruptor = document.getElementById("interruptor");
+
+  var interruptor = document.getElementById("sensors_interruptor");
   
   if (current_status == "active") {
     interruptor.classList.remove("interruptor-desactivado");
     interruptor.classList.add("interruptor-activado");
-  } else if (current_status == "false"){
+    interruptor.setAttribute("title", "Activado por ti ahora mismo")
+  } else if (current_status == "inactive"){
     interruptor.classList.remove("interruptor-activado");
     interruptor.classList.add("interruptor-desactivado");
+    interruptor.setAttribute("title", "Parado por ti ahora mismo")
   }
 }
