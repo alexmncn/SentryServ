@@ -1,16 +1,17 @@
 """Data functions."""
-
 from flask_login import current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func, and_
+from collections import defaultdict
+import numpy as np
 import re
 
 from app.services.access_log_db import access_log_table, query as access_log_query
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
 from app.services.net_and_connections import check_device_connection, pc_status, net_detect, scan_network
-from app.services.sensors import sensor_data_db, mqtt_app_control
+from app.services.sensors import sensor_data_db, sensor_chart_data_db, mqtt_app_control
 from app.services.user import load_credentials
-from app.models import StaticDevices
+from app.models import StaticDevices, SensorData
 
 # PENDING DICTIONARY FORMAT - Also the JS
 
@@ -120,6 +121,87 @@ def last_sensor_entry(limit=1):
         print('Error')
     
     return status_json or None
+
+
+def process_sensor_data(rows, interval, sample_size):
+    data_by_hour = defaultdict(list)
+    
+    for row in rows:
+        if interval.endswith('h'):
+            key = row.date.replace(minute=0, second=0, microsecond=0)
+        elif interval.endswith('d'):
+            key = row.date.replace(minute=0, second=0, microsecond=0)
+        else:
+            key = row.date  # No grouping
+        
+        data_by_hour[key].append(row)
+    
+    processed_data = []
+    for key, entries in data_by_hour.items():
+        avg_temp = round(np.mean([entry.temperature for entry in entries]), 2)
+        avg_humidity = round(np.mean([entry.humidity for entry in entries]), 2)
+        avg_battery = round(np.mean([entry.battery_level for entry in entries]), 2)
+        processed_data.append(SensorData(sensor_name='default', temperature=avg_temp, humidity=avg_humidity, battery_level=avg_battery, date=key))
+
+    return processed_data
+
+
+def sample_data(data, sample_size):
+    if len(data) <= sample_size:
+        return data
+
+    sampled_data = []
+    step = len(data) // sample_size
+    for i in range(0, len(data), step):
+        sampled_data.append(data[i])
+    return sampled_data
+
+
+def sensors_chart(sensor, time, samples):
+    data = sensor_chart_data_db(sensor, time)
+    data = process_sensor_data(data, time, samples)
+    data = sample_data(data, samples)
+
+    
+    date_format = '%d-%m-%Y %H:%M'
+    time_h = time.endswith('h')
+    time_d = time.endswith('d')
+    time_n = int(time[:-1])
+    if time_h:
+        if time_n <= 24:
+            date_format = '%H:%M'
+        else:
+            date_format = '%d - %H:%M'
+    elif time_d:
+        if time_n <= 31:
+            date_format = '%d - %H:%M'
+        elif time_n <= 365:
+            date_format = '%d-%m - %H:%M'
+
+
+    categories = [record.date.strftime(date_format) for record in data]
+    temperature_series = {
+        'name': 'Temperature',
+        'data': [record.temperature for record in data],
+        'color': '#FF0000'
+    }
+    humidity_series = {
+        'name': 'Humidity',
+        'data': [record.humidity for record in data],
+        'color': '#0000FF'
+    }
+    battery_series = {
+        'name': 'Battery Level',
+        'data': [record.battery_level for record in data],
+        'color': '#00FF00'
+    }
+
+    chart_data = {
+        'categories': categories,
+        'series': [temperature_series, humidity_series, battery_series]
+    }
+    
+    return chart_data
 
 
 def mqtt_app_status():

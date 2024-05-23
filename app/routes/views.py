@@ -52,3 +52,11 @@ def manage_credentials():
         return redirect(url_for(views.manage_credentials))
 
     return render_template('manage-credentials.html', form=form)
+
+@views_bp.route('/prueba-hc')
+def prueba_hc():
+    return render_template('p-hc-tables.html')
+
+@views_bp.route('/p-chart-sensores')
+def p_c_sensores():
+    return render_template('p-chart-sensores.html')

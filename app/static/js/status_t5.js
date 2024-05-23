@@ -2,7 +2,7 @@
 $(document).ready(function() {
 function actualizarTabla5() {
   $.ajax({
-    url: "/last-sensor-entry/1",
+    url: "/sensors/last-sensor-entry/1",
     type: "GET",
     dataType: "json",
     success: function(data) {

@@ -20,16 +20,22 @@ def pc_status():
 def devices_connection_status():
     return jsonify(data.devices_connection_data())
 
-@formated_data_bp.route('/last-sensor-entry/<int:sensor>', methods=['GET'])
+@formated_data_bp.route('/sensors/last-sensor-entry/<int:sensor>', methods=['GET'])
 def last_sensor_entry(sensor):
     return jsonify(data.last_sensor_entry(sensor))
+
+@formated_data_bp.route('/sensors/chart-data', methods=['GET'])
+def sensors_chart_data():
+    sensor = request.args.get('sensor', '1')
+    time = request.args.get('time', '24h')
+    samples = int(request.args.get('samples', '24'))
+    return jsonify(data.sensors_chart(sensor, time, samples))
 
 @formated_data_bp.route('/mqtt-service/status', methods=['GET'])
 @formated_data_bp.route('/mqtt-service/status/<option>', methods=['GET'])
 def mqtt_service_control(option=None):
     if option:
-        return jsonify(sensors.mqtt_app_control('change_status', option))
-        
+        return jsonify(sensors.mqtt_app_control('change_status', option))        
     else:
         return jsonify(data.mqtt_app_status())
 

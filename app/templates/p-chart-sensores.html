@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts with Flask</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</head>
+<body>
+    <div id="container" style="width:100%; height:400px;"></div>
+    <form onsubmit="reload(event)">
+      <input id="time-s"type="text" name="time" value="24h">
+      <input id="samples-s" type="number" name="samples" value=24>
+      <button type="submit">Update</button>
+    </form>
+
+    <script>
+      function reload(e){
+        e.preventDefault();
+        var time_s = document.getElementById('time-s').value;
+        var samples_s = document.getElementById('samples-s').value;
+        fetch(`/sensors/chart-data?sensor=1&time=${time_s}&samples=${samples_s}`)
+            .then(response => response.json())
+            .then(data => {
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'spline',
+                        zoomType: 'xy',
+                        backgroundColor: null
+                    },
+                    title: {
+                        text: 'Sensor Data'
+                    },
+                    xAxis: {
+                        categories: data.categories,
+                        title: {
+                            text: 'Date'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'ºC - %'
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        crosshairs: true
+                    },
+                    plotOptions: {
+                        series: {
+                            marker: {
+                                enabled: true,
+                                radius: 3,
+                                symbol: 'circle'
+                            },
+                            lineWidth: 2
+                        }
+                    },
+                    legend: {
+                        layout: 'horizontal',
+                        backgroundColor: null,
+                    },
+                    series: data.series,
+                    exporting: {
+                        enabled: true,
+
+                    }
+                });
+            });
+      }
+    </script>
+</body>
+</html>
+

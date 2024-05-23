@@ -1,8 +1,8 @@
 """Related sensors functions."""
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import csv
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 import subprocess
 
 from app.services.user import user_has_role
@@ -26,6 +26,28 @@ def sensor_data_db(sensor=1):
         return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
     else:
         return None
+
+
+def sensor_chart_data_db(sensor, time):
+    sensor_name = f'sensor{sensor}'
+    end_time = datetime.now()
+    # Detect if filter by days or by hours, and set the star_time filter
+    if time.endswith('h'):
+        hours = int(time[:-1])
+        start_time = end_time - timedelta(hours=hours)
+    elif time.endswith('d'):
+        days = int(time[:-1])
+        start_time = end_time - timedelta(days=days)
+    else:
+        raise ValueError("Unsupported time format. Use 'h' for hours or 'd' for days.")
+    
+    data = SensorData.query.filter(
+        SensorData.sensor_name == sensor_name,
+        SensorData.date >= start_time,
+        SensorData.date <= end_time
+    ).all()
+
+    return data
 
 
 def mqtt_app_control(action='status', option=None):

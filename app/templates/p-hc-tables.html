@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Highcharts with Flask</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</head>
+<body>
+    <div id="container" style="width:100%; height:400px;"></div>
+    <script>
+        fetch('/chart-data')
+            .then(response => response.json())
+            .then(data => {
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'line',
+                        zoomType: 'x' // Habilita el zoom horizontal
+                    },
+                    title: {
+                        text: 'Monthly Sales and Revenue Data'
+                    },
+                    subtitle: {
+                        text: 'Source: Company Database'
+                    },
+                    xAxis: {
+                        categories: data.categories,
+                        title: {
+                            text: 'Month'
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Amount'
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        crosshairs: true
+                    },
+                    plotOptions: {
+                        series: {
+                            marker: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: data.series,
+                    exporting: {
+                        enabled: true
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+
