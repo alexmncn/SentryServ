@@ -7,18 +7,22 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
 </head>
 <body>
-    <div id="container" style="width:100%; height:400px;"></div>
-    <form onsubmit="reload(event)">
+    <div id="container" style="width:100%; height: 50%;"></div>
+    <form id="chart-form">
       <input id="time-s"type="text" name="time" value="24h">
       <input id="samples-s" type="number" name="samples" value=24>
       <button type="submit">Update</button>
     </form>
 
     <script>
-      function reload(e){
-        e.preventDefault();
-        var time_s = document.getElementById('time-s').value;
-        var samples_s = document.getElementById('samples-s').value;
+      document.getElementById('chart-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const time_s = document.getElementById('time-s').value;
+            const samples_s = document.getElementById('samples-s').value;
+            reload_chart(time_s, samples_s);
+      });
+
+      function reload_chart(time_s, samples_s){
         fetch(`/sensors/chart-data?sensor=1&time=${time_s}&samples=${samples_s}`)
             .then(response => response.json())
             .then(data => {
@@ -26,7 +30,6 @@
                     chart: {
                         type: 'spline',
                         zoomType: 'xy',
-                        backgroundColor: null
                     },
                     title: {
                         text: 'Sensor Data'
