@@ -328,7 +328,7 @@ button.boton-graficas:hover {
   border-radius: 10px;
 }
 
-#@media(max-width: 600px){
+@media(max-width: 600px){
   .graficas{
     transform: scale(0.85);
   }
