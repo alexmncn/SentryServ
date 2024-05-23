@@ -97,7 +97,12 @@ def mqtt_app_control(action='status', option=None):
         
         # Compare and return the result of the action
         if post_status != pre_status:
-            return {'action': "success", 'status': post_status[0]}
+            response = {'action': "success", 'status': post_status[0]}
+            if option == 'start':
+                send_noti('Se ha activado el registro de datos de los sensores.', 'default')
+            else:
+                send_noti('Se ha desactivado el registro de datos de los sensores.', 'default')
+            return response
         else:
             return {'action': "error"}
 
