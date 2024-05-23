@@ -78,9 +78,16 @@ def on_message(client, userdata, message):
     # Check if the humidity data is 0 (normally means the sensor battery is so low that the sensor cant measure)
     if humidity == 0:
         time_treshold = datetime.utcnow() - timedelta(hours=1)
-        if sensor_down_control[sensor_name] is None or sensor_down_control[sensor_name] <= time_treshold:
+        if sensor_name not in sensor_down_control or sensor_down_control[sensor_name] <= time_treshold:
             send_noti(f'{sensor_name} está fuera de servicio. Cárgalo.', 'default')
             sensor_down_control[sensor_name] = datetime.utcnow()
+
+    # Insert data into the database
+    try:
+        if humidity !=0:
+            insert_sensor_data(sensor_name, temperature, humidity, date, battery_level)
+    except:
+        send_noti("Error inserting data into DB from MQTT_Service.", 'default')
 
 
 
