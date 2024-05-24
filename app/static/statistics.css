@@ -295,11 +295,7 @@ button.boton-graficas:hover {
   width: 150px;
 }
 
-.ancho_fijo {
-  width: 150px !important;
-}
-
-#graficas-temp-humd {
+#sensors-charts {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -307,7 +303,7 @@ button.boton-graficas:hover {
   justify-content: center;
 }
 
-#graficas-temp-humd .panel {
+#sensors-charts .panel {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -319,25 +315,31 @@ button.boton-graficas:hover {
   min-width: 425px;
 }
 
-.graficas {
-  transform: scale(0.9);
-  height: 230px;
-  width: 425px;
-  width: -webkit-fill-available;
-  border: none;
-  border-radius: 10px;
+#chart-form input {
+  background: rgba(255,255,255, 0.2);
+  border-style: solid;
+  border-color: rgba(255,255,255,0.25);
+  border-width: thin;
+  border-radius: 7px;
+  padding: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  width: 100px;
+  text-align: center;
 }
 
-@media(max-width: 600px){
-  .graficas{
-    transform: scale(0.85);
-  }
+#chart-form button {
+  color: white;
+  background: #0C0910;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 30px;
+}
 
-  #graficas-temp-humd.contenido{
-    margin: 20px 10px;
-    padding: 0px;
-  }
-
+#s1-chart {
+    width: 400px;
+    height: 300px;
 }
 
 .ocultar {

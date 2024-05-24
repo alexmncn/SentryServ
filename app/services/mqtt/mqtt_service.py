@@ -25,6 +25,7 @@ from app.config import MQTT_Service
 low_batt = False
 very_low_batt = False
 sensor_down_control = {}
+last_battery = 0
 
 
 # MQTT server configuration
@@ -59,21 +60,6 @@ def on_message(client, userdata, message):
     date_str = message_data.get("date")
     date = datetime.strptime(date_str, "%d-%m-%Y %H:%M:%S") if date_str else None
     battery_level = message_data["battery"]
-
-    # Insert data into the database
-    try:
-        insert_sensor_data(sensor_name, temperature, humidity, date, battery_level)
-    except:
-        send_noti("Error inserting data into DB from MQTT_Service.", 'default')
-
-    # Check if the battery is low
-    global low_batt, very_low_batt, sensor_down
-    if battery_level < 10 and low_batt is False:
-        send_noti(f"Batería baja en {sensor_name}: {battery_level} %", 'default')
-        low_batt = True 
-    elif battery_level < 5 and very_low_batt is False:
-        send_noti(f"Batería muy baja en {sensor_name}: {battery_level} %", 'default')
-        very_low_batt = True
  
     # Check if the humidity data is 0 (normally means the sensor battery is so low that the sensor cant measure)
     if humidity == 0:
@@ -81,15 +67,22 @@ def on_message(client, userdata, message):
         if sensor_name not in sensor_down_control or sensor_down_control[sensor_name] <= time_treshold:
             send_noti(f'{sensor_name} está fuera de servicio. Cárgalo.', 'default')
             sensor_down_control[sensor_name] = datetime.utcnow()
-
-    # Insert data into the database
-    try:
-        if humidity !=0:
+    else:
+        # Insert data into the database
+        try:
             insert_sensor_data(sensor_name, temperature, humidity, date, battery_level)
-    except:
-        send_noti("Error inserting data into DB from MQTT_Service.", 'default')
+        except:
+            send_noti("Error inserting data into DB from MQTT_Service.", 'default')
 
-
+     # Check if the battery is low
+    global low_batt, very_low_batt, sensor_down, last_battery
+    if battery_level < 10 and low_batt is False and battery_level < last_battery:
+        send_noti(f"Batería baja en {sensor_name}: {battery_level} %", 'default')
+        low_batt = True 
+    elif battery_level < 5 and very_low_batt is False and battery_level < last_battery:
+        send_noti(f"Batería muy baja en {sensor_name}: {battery_level} %", 'default')
+        very_low_batt = True
+    last_battery = battery_level
 
 
 # Function to start MQTT client and subscribe to a topic

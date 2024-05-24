@@ -118,12 +118,15 @@
           <button id="g-boton" class="boton-graficas" onclick="switch_graficas(event)"></button>
         </div>
 
-        <div id="graficas-temp-humd" class="ocultar">
+        <div id="sensors-charts" class="ocultar">
           <div class="panel">
-          <iframe id="g-temp" class="graficas" style="" src="https://thingspeak.com/channels/2504602/charts/1?bgcolor=%23101019&color=%23ffffff&dynamic=true&results=1440&timescale=30&title=Temperatura&type=spline&xaxis=Tiempo&yaxis=Grados+%28%C2%BAC%29"></iframe>
-          <iframe id="g-humd" class="graficas" style="" src="https://thingspeak.com/channels/2504602/charts/2?bgcolor=%23101019&color=%23ffffff&dynamic=true&results=1440&timescale=30&title=Humedad&type=line&xaxis=Tiempo&yaxis=%25+Relativa"></iframe>
+            <form id="chart-form">
+              <input id="time-s"type="text" name="time" value="24h">
+              <input id="samples-s" type="number" name="samples" value=24>
+              <button type="submit">Update</button>
+            </form>
+            <div id="s1-chart"></div>
           </div>
-        
         </div>
       </div>
 
@@ -166,13 +169,20 @@
     </div>
   </div>
   </main>
+  
 
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <!-- Highcharts -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <!-- Local -->
   <script src="{{ url_for('static', filename='js/status.js') }}"></script>
   <script src="{{ url_for('static', filename='js/scan.js') }}"></script>
   <script src="{{ url_for('static', filename='js/status_t3.js') }}"></script>
   <script src="{{ url_for('static', filename='js/status_t4.js') }}"></script>
   <script src="{{ url_for('static', filename='js/status_t5.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sensors_chart.js') }}"></script>
   <script src="{{ url_for('static', filename='js/control_save_data_sensor.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sql_last_10_ips.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sql_most_accesses_by_ip.js') }}"></script>

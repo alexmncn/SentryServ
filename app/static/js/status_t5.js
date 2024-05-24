@@ -29,7 +29,7 @@ setInterval(actualizarTabla5, 60000);
 
 function switch_graficas(event) {
   event.preventDefault();
-  var graficas = document.getElementById("graficas-temp-humd");
+  var graficas = document.getElementById("sensors-charts");
   var g_boton = document.getElementById("g-boton");
 
   if (graficas.classList.contains("ocultar")) {
