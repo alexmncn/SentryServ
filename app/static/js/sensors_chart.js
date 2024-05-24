@@ -12,6 +12,12 @@ function reload_chart(time_s, samples_s){
         Highcharts.chart('s1-chart', {
             chart: {
                 type: 'spline',
+                zoomType: 'xy',
+                resetZoomButton: {
+                    theme: {
+                        fill: 'transparent'
+                    }
+                },
                 backgroundColor: null,
                 events: {
                     fullscreenOpen: function () {
@@ -76,12 +82,6 @@ function reload_chart(time_s, samples_s){
                             fill: 'transparent'
                         }
                     }
-                }
-            },
-            zoomType: 'xy',
-            resetZoomButton: {
-                theme: {
-                    fill: 'transparent'
                 }
             },
             series: data.series
