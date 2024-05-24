@@ -127,7 +127,9 @@ def process_sensor_data(rows, interval, sample_size):
     data_by_hour = defaultdict(list)
     
     for row in rows:
-        if interval.endswith('h'):
+        if interval.endswith('h') and sample_size > 24:
+            key = row.date.replace(second=0, microsecond=0)
+        elif interval.endswith('h'):
             key = row.date.replace(minute=0, second=0, microsecond=0)
         elif interval.endswith('d'):
             key = row.date.replace(minute=0, second=0, microsecond=0)
@@ -143,7 +145,7 @@ def process_sensor_data(rows, interval, sample_size):
         avg_battery = round(np.mean([entry.battery_level for entry in entries]), 2)
         processed_data.append(SensorData(sensor_name='default', temperature=avg_temp, humidity=avg_humidity, battery_level=avg_battery, date=key))
 
-    return processed_data
+    return sample_data(processed_data, sample_size)
 
 
 def sample_data(data, sample_size):
@@ -160,13 +162,12 @@ def sample_data(data, sample_size):
 def sensors_chart(sensor, time, samples):
     data = sensor_chart_data_db(sensor, time)
     data = process_sensor_data(data, time, samples)
-    data = sample_data(data, samples)
 
     
     date_format = '%d-%m-%Y %H:%M'
     time_h = time.endswith('h')
     time_d = time.endswith('d')
-    time_n = int(time[:-1])
+    time_n = int(time[:-1])  
     if time_h:
         if time_n <= 24:
             date_format = '%H:%M'
