@@ -74,7 +74,7 @@ def mqtt_app_control(action='status', option=None):
         
         return status, since_date, since_time
     
-    @user_has_role('admin')
+    @user_has_role('admin', redirect_=False)
     def change_status(option):
         # Filter the action for command
         if option=='on':
@@ -82,7 +82,7 @@ def mqtt_app_control(action='status', option=None):
         elif option=='off':
             option='stop'
         else:
-            return 'Invalid command'
+            return {'action': "Invalid command"}
         
         # Save the previous status
         pre_status = status()
@@ -97,12 +97,11 @@ def mqtt_app_control(action='status', option=None):
         
         # Compare and return the result of the action
         if post_status != pre_status:
-            response = {'action': "success", 'status': post_status[0]}
             if option == 'start':
                 send_noti('Se ha activado el registro de datos de los sensores.', 'default')
             else:
                 send_noti('Se ha desactivado el registro de datos de los sensores.', 'default')
-            return response
+            return {'action': "success", 'status': post_status[0]}
         else:
             return {'action': "error"}
 

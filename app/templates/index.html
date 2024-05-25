@@ -75,19 +75,22 @@
         });
     }
   </script>
-
-  <div class="error">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <ul>
-            {% for message in messages %}
-              <p>{{ message }}</p>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endwith %}
-  </div>
   
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div id="display_error" class="overlay">
+      <div class="panel">
+        <ul>
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </ul>
+        <button type="submit" onclick="display_error.remove()">Volver</button>
+      </div>
+    </div>
+    {% endif %}
+  {% endwith %}
+
   <footer>
     <p>Esta página web pertenece a Alejandro M.C. Todos los derechos reservados.</p>
   </footer>

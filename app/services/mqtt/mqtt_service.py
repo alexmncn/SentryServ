@@ -26,6 +26,7 @@ low_batt = False
 very_low_batt = False
 sensor_down_control = {}
 last_battery = 0
+battery_charged = False
 
 
 # MQTT server configuration
@@ -60,6 +61,11 @@ def on_message(client, userdata, message):
     date_str = message_data.get("date")
     date = datetime.strptime(date_str, "%d-%m-%Y %H:%M:%S") if date_str else None
     battery_level = message_data["battery"]
+
+    if battery_level >= 100:
+        battery_level = 100
+        if battery_charged is False:
+            send_noti(f'Batería del {sensor_name} cargada al 100%. ', 'default')
  
     # Check if the humidity data is 0 (normally means the sensor battery is so low that the sensor cant measure)
     if humidity == 0:

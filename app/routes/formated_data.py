@@ -35,7 +35,10 @@ def sensors_chart_data():
 @formated_data_bp.route('/mqtt-service/status/<option>', methods=['GET'])
 def mqtt_service_control(option=None):
     if option:
-        return jsonify(sensors.mqtt_app_control('change_status', option))        
+        resp = sensors.mqtt_app_control('change_status', option)
+        if resp:
+            return jsonify(sensors.mqtt_app_control('change_status', option))        
+        return 'permissions error'
     else:
         return jsonify(data.mqtt_app_status())
 

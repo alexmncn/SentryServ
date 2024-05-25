@@ -10,7 +10,7 @@ from app.services.access_log_db import last_access_log_query
 from app.models import Credentials, User, UsersLoginLog
 
 
-def user_has_role(role):
+def user_has_role(role, redirect_=True, route=None):
     def wrapper(fn):
         @wraps(fn)
         def decorated_view(*args, **kwargs):
@@ -18,7 +18,11 @@ def user_has_role(role):
                 return fn(*args, **kwargs)
             else:
                 flash("No tienes permiso para acceder a esta página.", "danger")
-                return redirect(url_for('home.home'))
+                if redirect_:
+                    if route:
+                        return redirect(url_for(route))
+                    return redirect(url_for('home.home'))
+                return None
         return decorated_view
     return wrapper
 
