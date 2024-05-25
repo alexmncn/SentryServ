@@ -67,7 +67,12 @@ function change_status_request(callback){
   xhr.onreadystatechange = function() {
     if (xhr.readyState === XMLHttpRequest.DONE){
       if (xhr.status === 200) {
-        callback(null, JSON.parse(xhr.responseText));
+        response = xhr.responseText;
+        if (response != 'error') {
+          callback(null, JSON.parse(response));
+        } else{
+          callback(response);
+        }
       } else {
         console.error('La petición falló con estado: ' + xhr.status);
         callback('Error con la petición.')
@@ -83,6 +88,7 @@ function change_status() {
   change_status_request(function(error, response) {
     if (error) {
       console.log("Error 2: ", error);
+      location.reload();
     }else {
       if (response['action'] == 'success') {
         current_status = response['status']

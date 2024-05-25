@@ -74,7 +74,7 @@ def mqtt_app_control(action='status', option=None):
         
         return status, since_date, since_time
     
-    @user_has_role('admin', redirect_=False)
+    @user_has_role('admin', route='views.private_panel')
     def change_status(option):
         # Filter the action for command
         if option=='on':

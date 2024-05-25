@@ -50,6 +50,22 @@
   <div class="contenido" id="contenido">
     <!-- Aquí se incluye la pagina que se seleccione -->
   </div>
+  
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div id="display_error" class="overlay">
+        <div class="panel">
+          <ul>
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </ul>
+          <button type="submit" onclick="display_error.remove()">Volver</button>
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+
 
   <footer>
     <p>Esta página web pertenece a Alejandro M.C. Todos los derechos reservados.</p>
@@ -63,6 +79,7 @@
     function cargarPagina(paginaURL) {
       document.getElementById('contenido').innerHTML = `<iframe src="${paginaURL}" width="100%" height="100%" frameborder="0"></iframe>`;
     }
+    cargarPagina('statistics');
   </script>  
 
 </body>

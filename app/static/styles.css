@@ -184,6 +184,15 @@ input[value="ENCENDER PC"]:hover{
   padding: 0;
 }
 
+#display_error button {
+  color: #0C0910; 
+  background: rgba(255,255,255, 0.2);
+  padding: 5px;
+  border-radius: 10px;
+  border: none;
+}
+
+
 #display_error.overlay {
   position: fixed;
   top: 0;
