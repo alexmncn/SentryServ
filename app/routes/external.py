@@ -2,13 +2,14 @@
 from flask import Blueprint, redirect 
 from flask_login import login_required, current_user
 
+from app.services.user import user_has_role
 from app.services.pushover_notifications import send_noti
 
 external_bp = Blueprint('external', __name__)
 
 
 @external_bp.route('/get-adminer')
-@login_required
+@user_has_role('admin')
 def redirigir_a_adminer():
     message = f"{current_user.username} ha accedido a Adminer."
     send_noti(message, current_user.username)

@@ -10,7 +10,7 @@ views_bp = Blueprint('views', __name__)
 
 
 @views_bp.route('/private-panel')
-@login_required
+@user_has_role('admin')
 def private_panel():
     message = f"{current_user.username} ha accedido a Panel de Control."
     send_noti(message, current_user.username)
