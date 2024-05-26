@@ -1,13 +1,30 @@
 """User related services."""
 from flask import redirect, url_for, flash
-from flask_login import current_user
+from flask_login import login_user, current_user
 from sqlalchemy import desc
 from functools import wraps
 import json
 
 from app.extensions import db
 from app.services.access_log_db import last_access_log_query
+from app.services.pushover_notifications import send_noti
 from app.models import Credentials, User, UsersLoginLog
+
+
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        login_user(user, remember=True)
+            
+        # Save login log
+        save_user_login_log(current_user.id)
+
+        # Send notification
+        message = f"{username} ha iniciado sesión en la web."
+        send_noti(message, current_user.username)
+        
+        return True  
+    return False
 
 
 def user_has_role(role, redirect_=True, route=None):
