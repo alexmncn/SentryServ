@@ -24,6 +24,14 @@ function reload_chart(time_s, samples_s){
                         this.update({
                             chart: {
                                 backgroundColor: '#ffffff'
+                            },
+                            plotOptions: {
+                                series: {
+                                    marker: {
+                                        radius: 3,
+                                    },
+                                    lineWidth: 2
+                                }
                             }
                         });
                     },
@@ -31,6 +39,14 @@ function reload_chart(time_s, samples_s){
                         this.update({
                             chart: {
                                 backgroundColor: 'rgba(255, 255, 255, 0)'
+                            },
+                            plotOptions: {
+                                series: {
+                                    marker: {
+                                        radius: 1,
+                                    },
+                                    lineWidth: 1.5
+                                }
                             }
                         });
                     }
@@ -58,10 +74,10 @@ function reload_chart(time_s, samples_s){
                 series: {
                     marker: {
                         enabled: true,
-                         radius: 3,
+                         radius: 1,
                         symbol: 'circle'
                     },
-                    lineWidth: 2
+                    lineWidth: 1.5
                 }
             },
             legend: {
