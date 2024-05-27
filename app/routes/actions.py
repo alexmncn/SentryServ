@@ -28,7 +28,7 @@ def pc_on():
 @actions_bp.route(PC_ON_ROUTE, methods=['GET', 'POST'])
 def unsecured_pc_on():
     result = pc_on_esp32()
-    flash(resultado)
+    flash(result)
     
     if (result == 'El PC ya está encendido'):
         send_noti('Se ha intentado encender el PC, pero ya está encendido.', 'default')
