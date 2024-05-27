@@ -45,7 +45,12 @@ def mqtt_service_control(option=None):
 @formated_data_bp.route('/last-access-log-entry', methods=['GET'])
 @formated_data_bp.route('/last-access-log-entry/<int:limit>', methods=['GET'])
 def last_access_log_query(limit=10):
-    ip_filter = load_temporal_user_ip(current_user.id)
+    ip_filter =''
+    try:
+        ip_filter = load_temporal_user_ip(current_user.id)
+    except:
+        ip_filter = None
+        
     return jsonify(access_log_db.last_access_log_query(limit=limit, ip_filter=ip_filter))
 
 @formated_data_bp.route('/most-accesses-by-ip-entry', methods=['GET'])
