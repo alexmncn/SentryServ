@@ -45,13 +45,13 @@ def query(selects=None, columns=None, filters=None, group_by=None, order_by=None
     """Execute a query on the access_log table."""
     # Create a base query
     if selects:
-        query = select(selects)
+        query = select(*selects)
     else:
         query = select(access_log_table)
 
     # Apply selected columns
     if columns:
-        query = query.with_only_columns([access_log_table.columns[column] for column in columns])
+        query = query.with_only_columns(*[access_log_table.columns[column] for column in columns])
 
     # Apply filters
     if filters is not None:
@@ -96,26 +96,37 @@ def last_access_log_query(limit=10, ip_filter=None, user_login=False, additonal_
     
     order = access_log_table.columns.id.desc()
 
-
-    resultados = query(selects=selects, columns=columns, filters=filter, order_by=order, limit=limit)
+    results = query(selects=selects, columns=columns, filters=filter, order_by=order, limit=limit)
     
-    resultados_list = [dict(row) for row in resultados]
+    formatted_results = format(results, columns)
     
-    return resultados_list
+    return formatted_results
 
 
 def most_accesses_by_ip_query(limit=10):
     time_threshold = datetime.utcnow() - timedelta(hours=24)
 
     #parametros query
-    selects = [access_log_table.c.remote_host,func.count().label('count'),func.max(access_log_table.c.date).label('last_access')]
+    selects = [func.count().label('count'), access_log_table.c.remote_host,func.max(access_log_table.c.date).label('last_access')]
     columns = None
     filters = access_log_table.c.date >= time_threshold
     group = access_log_table.c.remote_host
     order = func.count().desc()
     
-    resultados = query(selects=selects, columns=columns, filters=filters, group_by=group, order_by=order, limit=limit)
+    results = query(selects=selects, columns=columns, filters=filters, group_by=group, order_by=order, limit=limit)
     
-    resultados_list = [dict(row) for row in resultados]
+    _columns = ['count', 'remote_host', 'last_access']
+    formatted_results = format(results, _columns)
     
-    return resultados_list
+    return formatted_results
+
+def format(results, columns=None):
+    if columns is None:
+        columns = ['id', 'remote_host', 'date']
+    
+    formatted_results = []
+    for result in results:
+        entry = {col: val for col, val in zip(columns, result)}
+        formatted_results.append(entry)
+    
+    return formatted_results
