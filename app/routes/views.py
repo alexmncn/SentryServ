@@ -1,9 +1,11 @@
 """Web view routes."""
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 
-from app.services.user import user_has_role
+from app.extensions import db
+from app.models import Credentials
 from app.forms import CredentialsForm
+from app.services.user import user_has_role
 from app.services.pushover_notifications import send_noti
 
 views_bp = Blueprint('views', __name__)
@@ -49,7 +51,7 @@ def manage_credentials():
 
         flash('La nueva credencial se ha guardado correctamente', 'error')
 
-        return redirect(url_for(views.manage_credentials))
+        return redirect(url_for('views.manage_credentials'))
 
     return render_template('manage-credentials.html', form=form)
 
