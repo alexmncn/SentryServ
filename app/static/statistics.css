@@ -333,6 +333,8 @@ button.boton-graficas:hover {
   border-radius: 5px;
   padding: 5px;
   margin-left: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 #s1-chart {

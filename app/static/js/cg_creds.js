@@ -27,9 +27,9 @@ $(document).ready(function() {
                     var p_id = `p_${credencial.id}`;
                     
                     // Creamos una contraseña oculta con el mismo numero de caracteres que la original
-                    var hide_password = '';
+                    var hiden_password = '';
                     for (var i = 0; i < credencial.password.length; i++) {
-                      hide_password += "•";
+                      hiden_password += "•";
                     }
 
                     $('#credenciales').append(`
@@ -48,7 +48,7 @@ $(document).ready(function() {
                             <p>${credencial.email}</p>
                             <div class="password">
                               <span id="${icon_id}" class="material-symbols-outlined switch-password-icon" onclick="switch_password('${credencial.id}','${icon_id}','${p_id}')">visibility</span>
-                              <p id="${p_id}" class="f_size_bullet_points">${hide_password}</p>
+                              <p id="${p_id}" class="f_size_bullet_points" onclick="copyPasswordToClipboard(this)">${hiden_password}</p>
                             </div>
                             <p>${credencial.description}</p>
                           </div>
@@ -104,4 +104,13 @@ function switch_password(id, icon_id, p_id){
     icon.classList.remove("icon_visibility_off");
   }
 
+}
+
+
+function copyPasswordToClipboard(element) {
+  var text = element.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+  }, function() {
+      alert('Error al copiar el texto');
+  });
 }
