@@ -37,7 +37,7 @@ def mqtt_service_control(option=None):
     if option:
         resp = sensors.mqtt_app_control('change_status', option)
         if isinstance(resp, dict):
-            return jsonify(sensors.mqtt_app_control('change_status', option))        
+            return resp        
         return 'error'
     else:
         return jsonify(data.mqtt_app_status())
