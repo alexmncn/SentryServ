@@ -1,6 +1,49 @@
-# app files
+# flask-app files
 migrations/
 
+# angular-app files
+# Compiled output
+/angular-app/dist
+/angular-app/tmp
+/angular-app/out-tsc
+/angular-app/bazel-out
+
+# Node
+/angular-app/node_modules
+/angular-app/npm-debug.log
+/angular-app/yarn-error.log
+
+# IDEs and editors
+/angular-app/.idea/
+/angular-app/.project
+/angular-app/.classpath
+/angular-app/.c9/
+/angular-app/*.launch
+/angular-app/.settings/
+/angular-app/*.sublime-workspace
+
+# Visual Studio Code
+/angular-app/.vscode/*
+!/angular-app/.vscode/settings.json
+!/angular-app/.vscode/tasks.json
+!/angular-app/.vscode/launch.json
+!/angular-app/.vscode/extensions.json
+/angular-app/.history/*
+
+# Miscellaneous
+/angular-app/.angular/cache
+/angular-app/.sass-cache/
+/angular-app/.connect.lock
+/angular-app/coverage
+/angular-app/libpeerconnection.log
+/angular-app/testem.log
+/angular-app/typings
+
+# System files
+/angular-app/.DS_Store
+/angular-app/Thumbs.db
+
+###################
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
