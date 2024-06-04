@@ -10,7 +10,10 @@ import { PruebaService } from '../prueba.service';
   styleUrl: './prueba.component.css'
 })
 export class PruebaComponent implements OnInit{
-  estado: string= '';
+  public sensor_name: string ="";
+  public temperature: number =0.0;
+  public humidity: number =0.0;
+  public battery: number =0.0;
 
   constructor(private pruebaService: PruebaService) { }
 
@@ -21,8 +24,10 @@ export class PruebaComponent implements OnInit{
   obtenerEstadoDispositivo(): void {
     this.pruebaService.obtenerEstado()
       .subscribe(data => {
-        this.estado = data['pc-status']['status-data'];
-        console.log(this.estado);
+        this.sensor_name = data['sensor_name']['status-data']
+        this.temperature = data['temperature']['status-data'];
+        this.humidity = data['humidity']['status-data'];
+        this.battery = data['battery']['status-data'];
       });
   }
 }

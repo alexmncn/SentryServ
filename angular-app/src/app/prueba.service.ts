@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PruebaService {
-  private apiUrl = 'http://127.0.0.1:8000/pc/status';
+  private apiUrl = 'http://127.0.0.1:8000/sensors/last-sensor-entry/1';
 
   constructor(private http: HttpClient) { }
 
