@@ -21,7 +21,8 @@ export class PruebaComponent implements OnInit{
   obtenerEstadoDispositivo(): void {
     this.pruebaService.obtenerEstado()
       .subscribe(data => {
-        this.estado = data['status'];
+        this.estado = data['pc-status']['status-data'];
+        console.log(this.estado);
       });
   }
 }
