@@ -339,6 +339,7 @@ button.boton-graficas:hover {
 
 #s1-chart {
   width: -webkit-fill-available;
+  width: -moz-available;
   height: 400px
 }
 
@@ -441,6 +442,3 @@ footer {
   justify-content: center;
   z-index: 1000;
 }
-
-
-
