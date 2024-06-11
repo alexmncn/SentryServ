@@ -7,11 +7,8 @@ import { PruebaComponent } from './prueba/prueba.component';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule, PruebaComponent],
-  template:`
-    <app-prueba></app-prueba>
-  `,
-  //templateUrl: './app.component.html',
-  //styleUrl: './app.component.css'
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'angular-app';
