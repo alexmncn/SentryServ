@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PruebaService } from '../prueba.service';
+
+import { PruebaService } from '../../services/prueba/prueba.service'; 
 
 @Component({
   selector: 'app-prueba',
