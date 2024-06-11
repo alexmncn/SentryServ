@@ -117,8 +117,8 @@ def last_sensor_entry(limit=1):
             'battery':{'status-data': battery},
             'date':{'status-data': date}
         }
-    except:
-        print('Error')
+    except Exception as e:
+        print(f'Error al importar datos de los sensores.\n {e}')
     
     return status_json or None
 
