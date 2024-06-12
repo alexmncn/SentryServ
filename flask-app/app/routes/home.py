@@ -1,6 +1,7 @@
 """App views."""
-from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify, make_response
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 
 from app.extensions import db, login_manager
 from app.forms import LoginForm, RegisterForm
@@ -17,27 +18,19 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-@home_bp.route('/', methods=['GET'])
-def home():
-    # Home page.
-    return render_template('index.html')
-
-@home_bp.route('/login/', methods=['GET', 'POST'])
+@home_bp.route('/login', methods=['POST'])
 def login():
-    # Login the user.
-    form = LoginForm()
-
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        user_authenticated = authenticate(username, password)
-        if user_authenticated:
-            flash('Has iniciado sesión', 'success')
-            return redirect(url_for('home.home'))
-        else:
-            flash('Credenciales incorrectas.\nPor favor, inténtalo de nuevo.', 'error')
-
-    return render_template('login.html', form=form)
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    
+    user_authenticated = authenticate(username, password)
+    
+    if user_authenticated:
+        access_token = create_access_token(identity={'username': username})
+        return jsonify({'token': access_token}), 200
+    
+    return jsonify({'message': 'Invalid credentials'}), 401
 
 
 @home_bp.route('/logout/')

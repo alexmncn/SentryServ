@@ -3,7 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 
 from app.routes import home, views, actions, formated_data, external
-from app.extensions import db, migrate, login_manager
+from app.extensions import db, migrate, login_manager, jwt
 
 
 def create_app(config_object="app.config"):
@@ -21,6 +21,7 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    jwt.init_app(app)
     return None
 
 
