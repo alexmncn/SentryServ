@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { environment } from '../../../enviroments/enviroment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
