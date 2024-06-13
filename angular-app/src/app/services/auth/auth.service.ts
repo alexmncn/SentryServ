@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroment';
+import { environment } from '../../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +10,7 @@ import { environment } from '../../enviroment';
 export class AuthService {
   private logInUrl = environment.apiUrl + '/login';
   private logOutUrl = environment.apiUrl + '/logout';
+  private authUrl = environment.apiUrl + '/auth';
 
   public username: string='';
 
@@ -27,15 +28,26 @@ export class AuthService {
 
   // Request to backend logout
   logoutReq(): Observable<any> {
+    const token = this.getToken();
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + this.getToken()
+      'Authorization': 'Bearer ' + token
     });
     return this.http.post<any>(this.logOutUrl, {}, { headers })
   }
 
+  isAuthtenticated(): boolean {
+    const token = this.getToken();
+    if (token) {
+      return true;
+    }
+    return false;
+  }
+
+
   // JWTtoken cookie
-  storeToken(token: string): void {
-    this.cookieService.set('authToken', token, 1, '/', undefined, true, 'Strict');
+  storeToken(token: string, expiresAt: string): void {
+    const expireDate = new Date(expiresAt);
+    this.cookieService.set('authToken', token, expireDate, '/', undefined, true, 'Strict');
   }
 
   getToken(): string | null {

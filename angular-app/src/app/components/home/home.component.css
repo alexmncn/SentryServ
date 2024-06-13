@@ -1,5 +1,42 @@
-img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
+header {
+    background-color: #0e0e10;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 100%;
+    border-color: #232125;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+#userWelcome {
+    display: -webkit-box;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+#userWelcome .welcome {
+    color: #a39fa9;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+a {
+    color: #a39fa9;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 6px 15px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    text-wrap: nowrap;
+}
+
+a:hover {
+    color: white;
 }

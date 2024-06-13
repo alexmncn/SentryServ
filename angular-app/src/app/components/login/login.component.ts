@@ -25,13 +25,14 @@ export class LoginComponent {
     this.authService.login(this.formData.username, this.formData.password)
       .subscribe({
         next: (response) => {
+          console.log(response);
           // Save the token with AuthService
-          this.authService.storeToken(response.token);
+          this.authService.storeToken(response.token, response.expires_at);
           this.authService.setUsername(response.username);
           this.router.navigate(['home']);
         },
         error: (error) => {
-          console.error(error.error.message);
+          alert(error.error.message);
         },
         complete: () => {
         }

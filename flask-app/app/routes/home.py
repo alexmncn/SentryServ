@@ -2,6 +2,9 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt, get_jwt_identity
+from datetime import datetime, timedelta
+import pytz
+
 
 from app.extensions import db, jwt, login_manager
 from app.forms import LoginForm, RegisterForm
@@ -28,10 +31,12 @@ def login():
     user_authenticated = authenticate(username, password)
     
     if user_authenticated:
-        access_token = create_access_token(identity={'username': username})
-        return jsonify({'token': access_token, 'username': username}), 200
+        expires_delta = timedelta(days=1)
+        expires_date = datetime.now(pytz.utc) + expires_delta
+        access_token = create_access_token(identity={'username': username}, expires_delta=expires_delta)
+        return jsonify(token=access_token, expires_at=expires_date.isoformat(), username=username), 200
     
-    return jsonify({'message': 'Invalid credentials'}), 401
+    return jsonify(message='Invalid credentials'), 401
 
 
 @home_bp.route('/logout', methods=['POST'])
@@ -41,7 +46,14 @@ def logout():
     logout_user() # Deprecated, soon removed
     jti = get_jwt()['jti']
     blacklist.add(jti)
-    return jsonify(msg="Logged out successfully"), 200
+    return jsonify(message='Logged out successfully'), 200
+
+@home_bp.route('/auth')
+@jwt_required()
+def auth():
+    user = get_jwt_identity()
+    return jsonify(user), 200
+    
 
 
 @jwt.token_in_blocklist_loader
