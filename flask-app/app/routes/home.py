@@ -1,9 +1,9 @@
 """App views."""
 from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt, get_jwt_identity
 
-from app.extensions import db, login_manager
+from app.extensions import db, jwt, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
 from app.services.user import authenticate
@@ -11,6 +11,7 @@ from app.services.pushover_notifications import send_noti
 
 home_bp = Blueprint('home', __name__)
 
+blacklist = set()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,18 +29,24 @@ def login():
     
     if user_authenticated:
         access_token = create_access_token(identity={'username': username})
-        return jsonify({'token': access_token}), 200
+        return jsonify({'token': access_token, 'username': username}), 200
     
     return jsonify({'message': 'Invalid credentials'}), 401
 
 
-@home_bp.route('/logout/')
-@login_required
+@home_bp.route('/logout', methods=['POST'])
+@jwt_required()
 def logout():
     # Logout.
-    logout_user()
-    flash('Has cerrado sesión', 'info')
-    return redirect(url_for('home.home'))
+    logout_user() # Deprecated, soon removed
+    jti = get_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify(msg="Logged out successfully"), 200
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(jwt_header, jwt_payload):
+    return jwt_payload['jti'] in blacklist
 
 
 @home_bp.route('/register/', methods=['GET', 'POST'])
