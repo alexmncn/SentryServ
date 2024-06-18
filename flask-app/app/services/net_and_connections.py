@@ -92,8 +92,8 @@ def pc_on_esp32():
         code, response = make_get_request(url_web_esp_on)
 
         if code == 200:
-            return 'PC encendido corectamente'
+            return code, response
         elif code == None:
-            return response
+            return 503, response
         else:
-            return f'No se ha podido encender el PC. {response}: {code}'
+            return code, response
