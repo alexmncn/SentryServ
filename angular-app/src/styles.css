@@ -3,6 +3,10 @@
 
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 html, body { height: 100%;}
 body { margin: 0; font-family: 'Segoe UI', Roboto, "Helvetica Neue", sans-serif; background-color: rgb(20, 20, 20); color: white}
 

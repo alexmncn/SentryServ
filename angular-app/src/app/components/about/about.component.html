@@ -1,15 +1,22 @@
 <header [class.shrink]="headerShrunk">
     <div class="header-content">
-        <h1>Control Server</h1>
-        <h2>About</h2>
+        <h1><a class="link" href="/home">SentryServ</a></h1>
+    
+        <div class="nav-sections">
+            <ul>
+                <li id="what_is_link" class="primary-text"><a class="link" (click)="scrollToSection('what_is')">What is</a></li>
+                <li id="development_link" class="primary-text"><a class="link" (click)="scrollToSection('development')">Development</a></li>
+                <li id="default1_link" class="primary-text"><a class="link" (click)="scrollToSection('default1')">Default-1</a></li>
+                <li id="default2_link" class="primary-text"><a class="link" (click)="scrollToSection('default2')">Default-2</a></li>
+                <li id="default3_link" class="primary-text"><a class="link" (click)="scrollToSection('default3')">Default-3</a></li>
+            </ul>
+        </div>
     </div>
 </header>
 
-<div class="header-main-separation" [class.shrink]="headerShrunk"></div>
-
 <main [class.shrink]="headerShrunk">
 
-    <section class="prev-info">
+    <section id="what_is" class="what-is">
          <h2 class="accent-1">What is?</h2>
          <p class="secondary-text">A <span class="text-highlight">self-hosted server</span>, which started with the idea of developing useful services, concentrated on a simple RaspberryPi.</p>
          <p class="secondary-text">The <span class="text-highlight">purpose</span> was to feed my desire to learn <span class="text-highlight">full-stack web development</span> and <span class="text-highlight">programming skills</span> in general, as well as to familiarize myself with <span class="text-highlight">Linux devices, databases, etc.</span></p>
@@ -18,7 +25,7 @@
 
     <mat-divider class="mat-divider"></mat-divider>
 
-    <section class="prev-info">
+    <section id="development" class="development">
         <h2 class="accent-1">Development</h2>
         <p class="secondary-text">A <span class="text-highlight">self-hosted server</span>, which started with the idea of developing useful services, concentrated on a simple RaspberryPi.</p>
         <p class="secondary-text">The <span class="text-highlight">purpose</span> was to feed my desire to learn <span class="text-highlight">full-stack web development</span> and <span class="text-highlight">programming skills</span> in general, as well as to familiarize myself with <span class="text-highlight">Linux devices, databases, etc.</span></p>
@@ -27,7 +34,7 @@
 
     <mat-divider class="mat-divider"></mat-divider>
 
-    <section class="prev-info">
+    <section id="default1" class="default-1">
         <h2 class="accent-1">What is?</h2>
         <p class="secondary-text">A <span class="text-highlight">self-hosted server</span>, which started with the idea of developing useful services, concentrated on a simple RaspberryPi.</p>
         <p class="secondary-text">The <span class="text-highlight">purpose</span> was to feed my desire to learn <span class="text-highlight">full-stack web development</span> and <span class="text-highlight">programming skills</span> in general, as well as to familiarize myself with <span class="text-highlight">Linux devices, databases, etc.</span></p>
@@ -36,7 +43,7 @@
 
     <mat-divider class="mat-divider"></mat-divider>
 
-    <section class="prev-info">
+    <section id="default2" class="default-2">
         <h2 class="accent-1">What is?</h2>
         <p class="secondary-text">A <span class="text-highlight">self-hosted server</span>, which started with the idea of developing useful services, concentrated on a simple RaspberryPi.</p>
         <p class="secondary-text">The <span class="text-highlight">purpose</span> was to feed my desire to learn <span class="text-highlight">full-stack web development</span> and <span class="text-highlight">programming skills</span> in general, as well as to familiarize myself with <span class="text-highlight">Linux devices, databases, etc.</span></p>
@@ -45,7 +52,7 @@
 
     <mat-divider class="mat-divider"></mat-divider>
 
-    <section class="prev-info">
+    <section id="default3" class="defaut-3">
         <h2 class="accent-1">What is?</h2>
         <p class="secondary-text">A <span class="text-highlight">self-hosted server</span>, which started with the idea of developing useful services, concentrated on a simple RaspberryPi.</p>
         <p class="secondary-text">The <span class="text-highlight">purpose</span> was to feed my desire to learn <span class="text-highlight">full-stack web development</span> and <span class="text-highlight">programming skills</span> in general, as well as to familiarize myself with <span class="text-highlight">Linux devices, databases, etc.</span></p>
@@ -54,7 +61,7 @@
 
     <footer>
         <ul>
-            <li class="secondary-text accent-1">Control Server</li>
+            <li class="secondary-text accent-1"><a (click)="scrollToSection('what_is')" class="link">SentryServ</a></li>
             <li class="secondary-text">Alejandro M.</li>
             <li class="secondary-text">2024</li>
             <li>
