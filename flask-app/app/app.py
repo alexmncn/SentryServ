@@ -4,7 +4,6 @@ from flask_cors import CORS
 
 from app.routes import home, views, actions, formated_data, external
 from app.extensions import db, migrate, login_manager
-from app.__init__ import on_init
 
 
 def create_app(config_object="app.config"):
@@ -14,7 +13,6 @@ def create_app(config_object="app.config"):
     register_extensions(app)
     register_blueprints(app)
     set_CORS(app)
-    on_init()
     return app
 
 
