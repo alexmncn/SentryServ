@@ -105,11 +105,3 @@ def pc_on_esp32():
             return 503, response
         else:
             return code, response
-
-
-def notify_new_public_ip():
-    public_ip = get_public_ip()
-    if public_ip is not None:
-        send_noti(f'Nueva IP del servidor: {public_ip}','default') 
-    
-    

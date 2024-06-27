@@ -17,7 +17,7 @@ init = True
 def notify_new_public_ip():
     public_ip = get_public_ip()
     if public_ip is not None:
-        send_noti(f'Nueva IP del servidor: {public_ip}','default')
+        send_noti(f'IP del servidor: {public_ip}','default')
     else:
         time.sleep(10000)
         notify_new_public_ip()
