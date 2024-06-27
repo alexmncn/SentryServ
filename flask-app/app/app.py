@@ -4,7 +4,6 @@ from flask_cors import CORS
 
 from app.routes import home, views, actions, formated_data, external
 from app.extensions import db, migrate, login_manager
-from app.services.net_and_connections import notify_new_public_ip
 
 init = True
 
@@ -15,7 +14,6 @@ def create_app(config_object="app.config"):
     register_extensions(app)
     register_blueprints(app)
     set_CORS(app)
-    on_init()
     return app
 
 
@@ -40,13 +38,3 @@ def register_blueprints(app):
 def set_CORS(app):
     CORS(app, origins=['http://localhost:4200'])
     return None
-
-
-def on_init():
-    global init
-    if init == True:
-        try:
-            notify_new_public_ip()
-            init = False
-        except:
-            print('Init Error')
