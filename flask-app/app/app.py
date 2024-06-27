@@ -6,6 +6,7 @@ from app.routes import home, views, actions, formated_data, external
 from app.extensions import db, migrate, login_manager
 from app.services.net_and_connections import notify_new_public_ip
 
+init = True
 
 def create_app(config_object="app.config"):
     # Create application factory. Param config_object, the configuration object to use.
@@ -42,7 +43,10 @@ def set_CORS(app):
 
 
 def on_init():
-    try:
-        notify_new_public_ip()
-    except:
-        print('Init Error')
+    global init
+    if init == True:
+        try:
+            notify_new_public_ip()
+            init = False
+        except:
+            print('Init Error')
