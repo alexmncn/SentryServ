@@ -1,14 +1,25 @@
 """App views."""
-from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify, make_response
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from flask_login import logout_user, login_required, current_user
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt, get_jwt_identity
+from datetime import datetime, timedelta
+import pytz
 
-from app.extensions import db, login_manager
+
+from app.extensions import db, jwt, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
 from app.services.user import authenticate
 from app.services.pushover_notifications import send_noti
 
 home_bp = Blueprint('home', __name__)
+
+blacklist = set()
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(jwt_header, jwt_payload):
+    return jwt_payload['jti'] in blacklist
 
 
 @login_manager.user_loader
@@ -17,36 +28,38 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-@home_bp.route('/', methods=['GET'])
-def home():
-    # Home page.
-    return render_template('index.html')
-
-@home_bp.route('/login/', methods=['GET', 'POST'])
+@home_bp.route('/login', methods=['POST'])
 def login():
-    # Login the user.
-    form = LoginForm()
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    
+    user_authenticated = authenticate(username, password)
+    
+    if user_authenticated:
+        expires_delta = timedelta(days=1)
+        expires_date = datetime.now(pytz.utc) + expires_delta
+        access_token = create_access_token(identity={'username': username}, expires_delta=expires_delta)
+        return jsonify(token=access_token, expires_at=expires_date.isoformat(), username=username), 200
+    
+    return jsonify(message='Invalid credentials'), 401
 
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        user_authenticated = authenticate(username, password)
-        if user_authenticated:
-            flash('Has iniciado sesión', 'success')
-            return redirect(url_for('home.home'))
-        else:
-            flash('Credenciales incorrectas.\nPor favor, inténtalo de nuevo.', 'error')
 
-    return render_template('login.html', form=form)
-
-
-@home_bp.route('/logout/')
-@login_required
+@home_bp.route('/logout', methods=['POST'])
+@jwt_required()
 def logout():
     # Logout.
-    logout_user()
-    flash('Has cerrado sesión', 'info')
-    return redirect(url_for('home.home'))
+    logout_user() # Deprecated, soon removed
+    jti = get_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify(message='Logged out successfully'), 200
+
+
+@home_bp.route('/auth')
+@jwt_required()
+def auth():
+    user = get_jwt_identity()
+    return jsonify(user), 200
 
 
 @home_bp.route('/register/', methods=['GET', 'POST'])

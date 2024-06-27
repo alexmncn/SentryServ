@@ -14,7 +14,7 @@ from app.models import Credentials, User, UsersLoginLog
 def authenticate(username, password):
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
-        login_user(user, remember=True)
+        login_user(user) # Deprecated, soon removed
             
         # Save login log
         save_user_login_log(current_user.id)

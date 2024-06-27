@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html, body { height: 100%;}
+body { margin: 0; font-family: 'Segoe UI', Roboto, "Helvetica Neue", sans-serif; background-color: rgb(20, 20, 20); color: white}
+
+/* 
+body {
+    background-color: #0f0f11;
+    color: white;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+} 
+*/

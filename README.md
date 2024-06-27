@@ -1,1 +1,1 @@
-<h1>Control Server</h1>
+<h1>SentryServ</h1>

@@ -1,0 +1,40 @@
+<!-- <section>
+  <h2>Login</h2>
+  <form (ngSubmit)="login()">
+    <div>
+      <input type="text" id="username" name="username" placeholder="Username" [(ngModel)]="formData.username" required>
+    </div>
+    <div>
+      <input type="password" id="password" name="password" placeholder="Password" [(ngModel)]="formData.password" required>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Login</button>
+  </form>
+</section> -->
+
+<main>
+  <section>
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" placeholder="Ingresa tu nombre de usuario">
+        <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+          El nombre de usuario es requerido
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Ingresa tu contraseña">
+        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+          La contraseña es requerida
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')">
+          La contraseña debe tener al menos 6 caracteres
+        </mat-error>
+      </mat-form-field>
+      
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Enviar</button>
+    </form>
+  </section>
+</main>

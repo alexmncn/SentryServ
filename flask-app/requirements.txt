@@ -9,6 +9,7 @@ email_validator==2.1.1
 environs==11.0.0
 Flask==3.0.3
 Flask-Cors==4.0.1
+Flask-JWT-Extended==4.6.0
 Flask-Login==0.6.3
 Flask-Migrate==4.0.7
 Flask-SQLAlchemy==3.1.1
@@ -25,7 +26,9 @@ mysqlclient==2.2.4
 numpy==1.26.4
 packaging==24.0
 paho-mqtt==2.1.0
+PyJWT==2.8.0
 python-dotenv==1.0.1
+pytz==2024.1
 requests==2.32.2
 SQLAlchemy==2.0.30
 typing_extensions==4.11.0
