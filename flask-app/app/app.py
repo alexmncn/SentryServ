@@ -4,8 +4,8 @@ from flask_cors import CORS
 
 from app.routes import home, views, actions, formated_data, external
 from app.extensions import db, migrate, login_manager
+from app.__init__ import on_init
 
-init = True
 
 def create_app(config_object="app.config"):
     # Create application factory. Param config_object, the configuration object to use.
@@ -14,6 +14,7 @@ def create_app(config_object="app.config"):
     register_extensions(app)
     register_blueprints(app)
     set_CORS(app)
+    on_init()
     return app
 
 
@@ -38,3 +39,5 @@ def register_blueprints(app):
 def set_CORS(app):
     CORS(app, origins=['http://localhost:4200'])
     return None
+
+
