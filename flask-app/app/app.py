@@ -34,6 +34,9 @@ def register_blueprints(app):
     app.register_blueprint(external.external_bp)
     return None
 
+
 def set_CORS(app):
     CORS(app, origins=['http://localhost:4200'])
     return None
+
+

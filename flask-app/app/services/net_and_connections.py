@@ -2,6 +2,7 @@
 import requests
 
 from app.services.system import execute_command
+from app.services.pushover_notifications import send_noti
 
 from app.config import ESP32_PC_ON_KEY
 
@@ -22,6 +23,14 @@ def check_device_connection(ip_address):
         return "Disconnected"
     
     
+def get_public_ip():
+    try:
+        command = ['curl','ifconfig.me']
+        ip = execute_command(command, use_shell=False)
+        return ip.stdout
+    except:
+        return None        
+
 # Get local IP
 def get_local_ip():
     try:
@@ -31,7 +40,6 @@ def get_local_ip():
     except Exception as e:
         print("Error getting local IP:", e)
         return None
-    
     
 def net_detect():
     octet_3 = 0
@@ -92,8 +100,8 @@ def pc_on_esp32():
         code, response = make_get_request(url_web_esp_on)
 
         if code == 200:
-            return 'PC encendido corectamente'
+            return code, response
         elif code == None:
-            return response
+            return 503, response
         else:
-            return f'No se ha podido encender el PC. {response}: {code}'
+            return code, response

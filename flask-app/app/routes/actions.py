@@ -26,12 +26,15 @@ def pc_on():
 ##unsecured_pc_on con esp32 // ACTIVA
 @actions_bp.route(PC_ON_ROUTE, methods=['GET', 'POST'])
 def unsecured_pc_on():
-    result = pc_on_esp32()
-    flash(result)
+    code, response = pc_on_esp32()
+    flash(response)
     
-    if (result == 'El PC ya está encendido'):
+    if (response == 'El PC ya está encendido'):
         send_noti('Se ha intentado encender el PC, pero ya está encendido.', 'default')
     else:
-        send_noti('Se ha encendido el PC remotamente', 'default')
+        if code == 200:
+            send_noti('Se ha encendido el PC remotamente', 'default')
+        else:
+            send_noti(f'ERROR al encender el PC remotamente. {response}: {code}', 'default')
 
-    return redirect(url_for('home.home'))
+    return code
