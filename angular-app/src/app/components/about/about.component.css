@@ -11,6 +11,7 @@
 
 .text-highlight {
     color: white;
+    font-weight: 500;
 }
 
 .accent-1{
@@ -28,6 +29,7 @@ header {
     overflow: hidden;
     z-index: 1000; 
     background-color: rgb(114, 98, 223);
+    box-shadow: 0px 2px 15px 10px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes headerFadeIn {
@@ -44,23 +46,30 @@ header {
 header.shrink {
     height: auto;
     position: sticky;
-    animation: headerFadeIn 0.3s ease-in-out;
+    animation: headerFadeIn 0.4s ease-in-out;
 }
 
 .header-content {
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+.shrink .header-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 header h1 {
-    font-size: 70px;
-    line-height: 70px;
+    font-size: 50px;
+    line-height: 50px;
     margin: 15px;
 }
 
 header.shrink h1 {
-    display: none;
+
 }
 
 .nav-sections ul {
@@ -75,6 +84,7 @@ header.shrink h1 {
     list-style: none;
     white-space: nowrap;
     opacity: 0.7;
+    transition: all 0.2s ease-in-out;
 }
 
 .nav-sections li:hover {
@@ -105,13 +115,13 @@ section {
     padding: 30px 45px;
     font-size: 18px;
     z-index: 1;
-    transition: all 0.2s ease;
+    transition: all 0.35s ease-in-out;
 }
 
 .section-focus {
     z-index: 2;
-    transform: scale(1.07);
-    transition: all 0.2s ease;
+    transform: scale(1.03);
+    
 }
 
 section p {
@@ -120,8 +130,6 @@ section p {
 
 section h2 {
     margin-top: 0;
-    top: 0;
-    background-color: rgb(30, 30, 30);
 }
 
 .mat-divider {
@@ -176,9 +184,9 @@ footer li {
 .svg-icon {
     width: 20px;
     height: 20px;
-    color: white;
+    color: #c0c0c0;
 }
 
 .svg-icon:hover {
-    color: #c0c0c0;
+    color: white;
 }

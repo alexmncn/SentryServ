@@ -16,6 +16,12 @@ home_bp = Blueprint('home', __name__)
 
 blacklist = set()
 
+
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(jwt_header, jwt_payload):
+    return jwt_payload['jti'] in blacklist
+
+
 @login_manager.user_loader
 def load_user(user_id):
     # Load user by ID.
@@ -48,17 +54,12 @@ def logout():
     blacklist.add(jti)
     return jsonify(message='Logged out successfully'), 200
 
+
 @home_bp.route('/auth')
 @jwt_required()
 def auth():
     user = get_jwt_identity()
     return jsonify(user), 200
-    
-
-
-@jwt.token_in_blocklist_loader
-def check_if_token_in_blacklist(jwt_header, jwt_payload):
-    return jwt_payload['jti'] in blacklist
 
 
 @home_bp.route('/register/', methods=['GET', 'POST'])

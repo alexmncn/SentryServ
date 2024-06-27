@@ -11,12 +11,14 @@ import { MatDivider } from '@angular/material/divider';
 export class AboutComponent {
   headerShrunk = false;
   headerMarginPos = 1;
-
   sections!: HTMLElement[];
+
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
+
   ngAfterViewInit(): void {
+    // Load sections elements
     this.sections = Array.from(this.el.nativeElement.querySelectorAll('section'));
   }
 
@@ -72,6 +74,7 @@ export class AboutComponent {
       }
     });
   }
+
 
   scrollToSection(id: string): void {
     const element = document.getElementById(id);
