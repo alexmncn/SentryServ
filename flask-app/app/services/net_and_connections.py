@@ -27,7 +27,10 @@ def get_public_ip():
     try:
         command = ['curl','ifconfig.me']
         ip = execute_command(command, use_shell=False)
-        return ip.stdout
+        if '.' in ip.stdout:
+            return ip.stdout
+        else:
+            return None
     except:
         return None        
 
