@@ -61,18 +61,18 @@ def scan_network(ip_range):
 
 
 # Makes a get request to a specific address
-def make_get_request(url):
+def make_get_request(url, params=None, headers=None):
     try:
         # Make request to the url
-        response = requests.get(url)
+        response = requests.get(url, params=params, headers=headers)
             
         # Check and return the status code of the request
         if response.status_code == 200:
             return response.status_code, response
         else:
-            return response.status_code, f'Error en la solicitud: {response.status_code}'
+            return response.status_code, f'Error {response.status_code} en la solicitud: {response.reason}'
     except Exception as e:
-        return None, f'Error en la solicitud: {e}'
+        return None, f'Error al realizar la solicitud: {e}'
 
 
 # Check if PC is ON or OFF 

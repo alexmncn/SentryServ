@@ -6,6 +6,8 @@ env = Env()
 env.read_env()
 
 
+HOSTNAME = env.str("HOSTNAME")
+
 SECRET_KEY = env.str("SECRET_KEY")
 
 SESSION_COOKIE_SECURE = True
@@ -39,3 +41,10 @@ class MQTT_Service:
     CA_CERTIFICATE = env.str("MQTT_CA_CERTIFICATE")
     CLIENT_ID = env.str("MQTT_CLIENT_ID")
     TOPIC = env.str("MQTT_TOPIC")
+    
+    
+class NOIP_DNS:
+    URL = env.str("NOIP_DNS_URL")
+    HOSTNAME = HOSTNAME
+    USERNAME = env.str("NOIP_DNS_USERNAME")
+    PASSWORD = env.str("NOIP_DNS_PASSWORD")
