@@ -8,12 +8,11 @@ import re
 
 from app.services.access_log_db import access_log_table, query as access_log_query
 from app.services.system import get_cpu_usage, get_ram_usage, get_cpu_temp
-from app.services.net_and_connections import check_device_connection, pc_status, net_detect, scan_network
-from app.services.sensors import sensor_data_db, sensor_chart_data_db, mqtt_app_control
+from app.services.net_and_connections import static_devices_data_db, check_device_connection, pc_status, net_detect, scan_network
+from app.services.sensors import sensor_data_db, sensor_chart_data_db
 from app.services.user import load_credentials
-from app.models import StaticDevices, SensorData
+from app.models import SensorData
 
-# PENDING DICTIONARY FORMAT - Also the JS
 
 def load_user_credentials():
     session_user_id = current_user.id
@@ -38,38 +37,33 @@ def load_user_credentials():
 
 def scan_local_devices():
     ip_range = f'192.168.{net_detect()}.0/24'
-    result = scan_network(ip_range)
+    scan_data = scan_network(ip_range, arguments='-sn')
 
-    hosts_data = []
+    host_data = []
 
-    if result.returncode == 0:
-        # Extract IPs and hostnames using regular names
-        pattern = re.compile(r'Nmap scan report for (.+) \((\d+\.\d+\.\d+\.\d+)\)')
-        matches = pattern.findall(result.stdout)
-
-        for i, match in enumerate(matches, start=1):
-            host_name, ip = match
-            hosts_data.append({'Host': host_name, 'IP': ip, 'Status':'Activo'})
-    else:
-        print(f'Error: {result.stderr}')
-    return hosts_data
+    for host in scan_data.all_hosts():
+        host_name = scan_data[host].hostname()
+        ip = host
+        status = scan_data[host].state()
+        host_data.append({'host': host_name, 'ip': ip, 'status': status})
+        
+    return host_data
 
 
-#obtener_datos_json_tablas
 def devices_connection_data():
-    static_devices = StaticDevices.query.all()
+    static_devices_data = static_devices_data_db()
     
     devices_status = []
 
-    for device in static_devices:
-        status = check_device_connection(device.ip)
-        
-        devices_status.append({'name': device.name, 'IP': device.ip, 'status': status})
+    if static_devices_data:
+        for device in static_devices_data:
+            status = check_device_connection(device.ip)
+            
+            devices_status.append({'name': device.name, 'ip': device.ip, 'status': status})
 
-    return devices_status
+    return devices_status or None
 
 
-# Obtener datos tabla 3 raspberry server
 def server_info():
     temp = get_cpu_temp()
     rsp_temp = f'{temp} ºC'
@@ -82,9 +76,9 @@ def server_info():
 
 
     server_info = {
-        'temp': {'status-data': rsp_temp},
-        'cpu-usage':{'status-data': cpu_usage},
-        'ram-usage':{'status-data': ram_usage},
+        'temp': rsp_temp,
+        'cpu-usage': cpu_usage,
+        'ram-usage': ram_usage,
     }
 
     return server_info
@@ -92,35 +86,32 @@ def server_info():
 
 def pc_status_info():
     pc_status_ = pc_status()
-    #send_notis.send_noti(pc_stats, 'default')
 
     status = {
-        'pc-status': {'status-data': pc_status_},
+        'pc-status': pc_status_,
     }
     
     return status
 
 
-def last_sensor_entry(limit=1):
-    status_json = None
-    try:
-        s_name, temp, humd, date, battery = sensor_data_db(limit)
-
-        temp = f'{temp} ºC'
-        humd = f'{humd} %'
-        battery = f'{round(float(battery), 1)} %'
-
-        status_json = {
-            'sensor_name':{'status-data': s_name},
-            'temperature':{'status-data': temp},
-            'humidity':{'status-data': humd},
-            'battery':{'status-data': battery},
-            'date':{'status-data': date}
-        }
-    except Exception as e:
-        print(f'Error al importar datos de los sensores.\n {e}')
+def last_sensor_entry(sensor_id=1):
+    sensor_data = None
+    s_data = sensor_data_db(sensor_id)
     
-    return status_json or None
+    if s_data:
+        temp = f'{s_data.temperature} ºC'
+        humd = f'{s_data.humidity} %'
+        battery = f'{round(float(s_data.battery_level), 1)} %'
+
+        sensor_data = {
+            'sensor_name': s_data.sensor_name,
+            'temperature': temp,
+            'humidity':humd,
+            'battery': battery,
+            'date': s_data.date
+        }
+    
+    return sensor_data
 
 
 def process_sensor_data(rows, interval, sample_size):
@@ -203,21 +194,6 @@ def sensors_chart(sensor, time, samples):
     }
     
     return chart_data
-
-
-def mqtt_app_status():
-    status = 'error'
-    since_date = 'error'
-
-    status, since_date, since_time = mqtt_app_control('status')
-
-    status_json = {
-        'status': status,
-        'date': since_date,
-        'time': since_time
-    }
-
-    return status_json
 
 
 def last_access_log_query(limit=10, ip_filter=None, user_login=False, additonal_columns=None):

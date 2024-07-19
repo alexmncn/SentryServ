@@ -1,8 +1,10 @@
 """Related net and device connections functions."""
 import requests
+import nmap
 
 from app.services.system import execute_command
 from app.services.pushover_notifications import send_noti
+from app.models import StaticDevices
 
 from app.config import ESP32_PC_ON_KEY
 
@@ -52,12 +54,12 @@ def net_detect():
         
     return octet_3
 
-# Return the 3rd octet of the network ip.
-def scan_network(ip_range):
-    command = f'nmap -sn {ip_range}'
-    result = execute_command(command)
 
-    return result
+def scan_network(ip_range, arguments='-sn'):
+    nm = nmap.PortScanner()
+    nm.scan(hosts=ip_range, arguments=arguments)
+    
+    return nm
 
 
 # Makes a get request to a specific address
@@ -108,3 +110,8 @@ def pc_on_esp32():
             return 503, response
         else:
             return code, response
+        
+        
+def static_devices_data_db():
+    return StaticDevices.query.all()
+    

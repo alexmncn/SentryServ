@@ -40,7 +40,6 @@ def detect_new_public_ip():
                 except Exception as e:
                     send_noti(f'Error al actualizar la IP automaticamente: {e}', 'default')
                     
-                
             time.sleep(600)
         else:
             time.sleep(60)

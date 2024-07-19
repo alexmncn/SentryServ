@@ -19,14 +19,9 @@ save_sensor_data = True
 
 def sensor_data_db(sensor=1):
     sensor_name=f'sensor{sensor}'
-
-    s_data = SensorData.query.filter_by(sensor_name=sensor_name).order_by(desc(SensorData.date)).first()
     
-    if s_data is not None:
-        return s_data.sensor_name, s_data.temperature, s_data.humidity, s_data.date, s_data.battery_level
-    else:
-        return None
-
+    return SensorData.query.filter_by(sensor_name=sensor_name).order_by(desc(SensorData.date)).first()
+        
 
 def sensor_chart_data_db(sensor, time):
     sensor_name = f'sensor{sensor}'
@@ -72,9 +67,9 @@ def mqtt_app_control(action='status', option=None):
                 since_time = date_time[1]
                 break
         
-        return status, since_date, since_time
+        return {'status': status, 'date': since_date, 'time': since_time}
     
-    @user_has_role('admin', route='views.private_panel')
+    
     def change_status(option):
         # Filter the action for command
         if option=='on':
@@ -82,7 +77,7 @@ def mqtt_app_control(action='status', option=None):
         elif option=='off':
             option='stop'
         else:
-            return {'action': "Invalid command"}
+            return {'action': "error", 'code': 400, 'error': "Invalid command"}
         
         # Save the previous status
         pre_status = status()
@@ -101,9 +96,9 @@ def mqtt_app_control(action='status', option=None):
                 send_noti('Se ha activado el registro de datos de los sensores.', 'default')
             else:
                 send_noti('Se ha desactivado el registro de datos de los sensores.', 'default')
-            return {'action': "success", 'status': post_status[0]}
+            return {'action': "success", 'code': 200, 'status': post_status[0]}
         else:
-            return {'action': "error"}
+            return {'action': "error", 'code': 400, 'error': "The status not changed. Maybe it was already in the requested status"}
 
     
     if action=='status':
