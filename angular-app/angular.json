@@ -7,10 +7,10 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "path": "src/app/components"
+          "path": "src/app"
         },
         "@schematics/angular:service": {
-          "path": "src/app/services"
+          "path": "src/app/core/services"
         }
       },
       "root": "",
@@ -34,7 +34,6 @@
               }
             ],
             "styles": [
-              "src/custom-theme.scss",
               "src/styles.css"
             ],
             "scripts": []
