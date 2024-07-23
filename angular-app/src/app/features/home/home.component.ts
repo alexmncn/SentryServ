@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth/auth.service';
+import { LoginComponent } from "../auth/login/login.component";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, LoginComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

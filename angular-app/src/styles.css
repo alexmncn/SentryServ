@@ -1,5 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Tema claro */
 :root {
+    --white: #ffffff;
+    --lighter-black: #303030;
+    --black: #1C1C1C;
+    --grey: #6c757d;
+    --primary-accent: #007bff;
+    --primary-accent-1: #0056b3;
+    --secondary-accent: ;
+    --warn-accent: #f34b5c; 
+    --border-color: #e0e0e0;
+
 
 }
 
@@ -8,7 +21,12 @@ html {
 }
 
 html, body { height: 100%;}
-body { margin: 0; font-family: 'Segoe UI', Roboto, "Helvetica Neue", sans-serif; background-color: rgb(20, 20, 20); color: white}
+body { 
+    margin: 0; 
+    font-family: 'Montserrat','Segoe UI', Roboto, "Helvetica Neue", sans-serif;
+    background-color: #000000;
+    color: var(--white);
+}
 
 /* 
 body {

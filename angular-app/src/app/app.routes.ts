@@ -7,7 +7,7 @@ import { AboutComponent } from './features/about/about.component';
 
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/about', pathMatch: 'full' },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'about', component: AboutComponent },
     { path: 'login', component: LoginComponent },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
