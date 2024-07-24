@@ -141,33 +141,6 @@ section h2 {
     border-top-width: 1px;
 }
 
-footer {
-    position: sticky;
-    width: 100%;
-    bottom: 0;
-    text-wrap: nowrap;
-    font-size: 15px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    background-color: rgb(20, 20, 20);
-}
-
-footer ul {
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-footer li {
-    margin: 0px 10px;
-    list-style: none;
-    line-height: 0;
-}
-
 .link {
     text-decoration: none;
     cursor: pointer;
@@ -178,15 +151,5 @@ footer li {
 }
 
 .link:hover {
-    color: white;
-}
-
-.svg-icon {
-    width: 20px;
-    height: 20px;
-    color: #c0c0c0;
-}
-
-.svg-icon:hover {
     color: white;
 }
