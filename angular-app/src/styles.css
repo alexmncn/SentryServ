@@ -3,18 +3,20 @@
 
 /* Tema claro */
 :root {
+    /* Grey Scale */
     --white: #ffffff;
-    --white-1: #c0c0c0;
-    --lighter-black: #303030;
-    --black: #1C1C1C;
-    --grey: #6c757d;
-    --primary-accent: #007bff;
-    --primary-accent-1: #0056b3;
+    --gray-50: #e0e0e0;
+    --gray-100: #c0c0c0;
+    --gray-500: #6c757d;
+    --gray-700: #303030;
+    --gray-800: #1C1C1C;
+    --gray-900: #111111;
+    --black: #000000;
+
+    --primary-accent-500: #007bff;
+    --primary-accent-600: #0056b3;
     --secondary-accent: ;
-    --warn-accent: #f34b5c; 
-    --border-color: #e0e0e0;
-
-
+    --warn-accent: #f34b5c;
 }
 
 html {
@@ -25,15 +27,36 @@ html, body { height: 100%;}
 body { 
     margin: 0; 
     font-family: 'Montserrat','Segoe UI', Roboto, "Helvetica Neue", sans-serif;
-    background-color: #000000;
+    background-color: var(--gray-900);
     color: var(--white);
 }
 
-/* 
-body {
-    background-color: #0f0f11;
-    color: white;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin: 0;
-} 
-*/
+
+.link {
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.link:visited {
+    color: inherit;
+}
+
+.link:hover {
+    color: var(--white);
+    text-decoration-line: underline;
+}
+
+.svg-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--gray-100);
+}
+
+.svg-icon:hover {
+    color: var(--white);
+}
+
+.cc-license {
+    opacity: 0.755;
+}

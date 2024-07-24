@@ -21,32 +21,5 @@ footer li {
     margin: 0px 10px;
     list-style: none;
     line-height: 0;
-    color: var(--white-1);
-}
-
-.link {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.link:visited {
-    color: inherit;
-}
-
-.link:hover {
-    color: var(--white);
-}
-
-.svg-icon {
-    width: 20px;
-    height: 20px;
-    color: var(--white-1);
-}
-
-.svg-icon:hover {
-    color: var(--white);
-}
-
-.cc-license {
-    opacity: 0.755;
+    color: var(--gray-100);
 }
