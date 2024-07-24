@@ -5,7 +5,7 @@
     <form [formGroup]="loginForm" (ngSubmit)="sendLogin()" class="login-form">
       <div class="form-group">
         <label for="username">Usuario</label>
-        <input type="text" id="username" formControlName="username" placeholder="Introduce tu nombre de usuario">
+        <input type="text" id="username" formControlName="username" placeholder="Introduce tu nombre de usuario" autocomplete="off">
         <div @errorAnimation *ngIf="loginForm.controls['username'].touched && loginForm.controls['username'].hasError('required')" class="error">
           <p >Usuario requerido</p>
         </div>
@@ -13,7 +13,7 @@
 
       <div class="form-group">
         <label form="password">Contraseña</label>
-        <input type="password" id="password" formControlName="password" placeholder="Introduce tu contraseña">
+        <input type="password" id="password" formControlName="password" placeholder="Introduce tu contraseña" autocomplete="off">
         <div class="error">
           <p @errorAnimation *ngIf="loginForm.controls['password'].touched && loginForm.controls['password'].hasError('required')">Contraseña requerida</p>
           <p @errorAnimation *ngIf="loginForm.controls['password'].hasError('minlength')">La contraseña debe tener al menos {{ passwordMinLen }} caracteres</p>
