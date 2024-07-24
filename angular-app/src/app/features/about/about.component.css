@@ -28,7 +28,7 @@ header {
     justify-content: space-evenly;
     overflow: hidden;
     z-index: 1000; 
-    background-color: rgb(114, 98, 223);
+    background-color: var(--primary-accent-500);
     box-shadow: 0px 2px 15px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -109,7 +109,7 @@ main {
 section {
     margin: 50px 0;
     width: 75%;
-    background-color: rgb(30, 30, 30);
+    background-color: var(--gray-800);
     box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.02);
     border-radius: 14px;
     padding: 30px 45px;
@@ -139,17 +139,4 @@ section h2 {
     border-top-style: solid;
     border-top-color: #6d6d6d;
     border-top-width: 1px;
-}
-
-.link {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.link:visited {
-    color: inherit;
-}
-
-.link:hover {
-    color: white;
 }
