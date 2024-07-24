@@ -34,7 +34,7 @@ h3 {
 
 .login-form {
     position: relative;
-    width: 400px;
+    width: 350px;
     margin: 0 auto;
     padding: 1.5rem;
     border-radius: 8px;
@@ -115,4 +115,18 @@ button:disabled {
   
 button:not(:disabled):hover {
     background-color: var(--primary-accent-600)
+}
+
+.link:hover {
+    text-decoration-line: underline;
+}
+
+p.register {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+    justify-self: center;
 }
