@@ -121,7 +121,7 @@ button:not(:disabled):hover {
     text-decoration-line: underline;
 }
 
-p.register {
+p.info {
     position: absolute;
     bottom: 0;
     left: 0;

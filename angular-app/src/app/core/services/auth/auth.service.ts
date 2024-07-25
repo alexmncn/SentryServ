@@ -12,6 +12,9 @@ export class AuthService {
   private logOutUrl = environment.apiUrl + '/logout';
   private authUrl = environment.apiUrl + '/auth';
 
+  // Url to redirect after the login
+  public redirectUrl: string | null = null;
+
   public username: string='';
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }

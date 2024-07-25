@@ -31,6 +31,8 @@ export class LoginComponent {
 
   passwordMinLen = 4;
 
+  defaultRedirectRoute = '/home';
+
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
     this.loginForm = this.fb.group({
@@ -49,7 +51,10 @@ export class LoginComponent {
             // Save the token with AuthService
             this.authService.storeToken(response.token, response.expires_at);
             this.authService.setUsername(response.username);
-            this.router.navigate(['home']);
+
+            // redirect
+            const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
+            this.router.navigate([redirectUrl]);
           },
           error: (error) => {
             alert(error.error.message);
