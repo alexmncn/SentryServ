@@ -8,8 +8,9 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private logInUrl = environment.apiUrl + '/login';
-  private logOutUrl = environment.apiUrl + '/logout';
+  private registerUrl = environment.apiUrl + '/register';
+  private loginUrl = environment.apiUrl + '/login';
+  private logoutUrl = environment.apiUrl + '/logout';
   private authUrl = environment.apiUrl + '/auth';
 
   // Url to redirect after the login
@@ -19,8 +20,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
+  register(username: string, password:string): Observable<any> {
+    return this.http.post<any>(this.registerUrl, {username, password})
+  }
+
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(this.logInUrl, {username, password})
+    return this.http.post<any>(this.loginUrl, {username, password})
   }
 
   // Clear user data
@@ -35,7 +40,7 @@ export class AuthService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
-    return this.http.post<any>(this.logOutUrl, {}, { headers })
+    return this.http.post<any>(this.logoutUrl, {}, { headers })
   }
 
   isAuthtenticated(): boolean {

@@ -27,6 +27,23 @@ def authenticate(username, password):
     return False
 
 
+def register_new(username, password):
+    # Check if a user with the same username existing_user
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return 409
+
+    # Creates the new user instance and set password
+    new_user = User(username=username)
+    new_user.set_password(password)
+
+    # Add new user to database
+    #db.session.add(new_user)
+    #db.session.commit()
+    
+    return 200
+
+
 def user_has_role(role, redirect_=True, route=None):
     def wrapper(fn):
         @wraps(fn)

@@ -29,8 +29,9 @@ export class RegisterComponent {
   registerForm: FormGroup;
 
   passwordMinLen = 4;
-
   password_match = true;
+
+  defaultRedirectRoute = 'login'
 
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
@@ -44,8 +45,21 @@ export class RegisterComponent {
   sendRegister() {
     if (this.registerForm.valid) {
       if (this.registerForm.value.password == this.registerForm.value.confirm_password) {
-        alert('exito');
-        this.router.navigate(['login']);
+        this.authService.register(this.registerForm.value.username, this.registerForm.value.password)
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+              alert(response.message)
+              // redirect
+              const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
+              this.router.navigate([redirectUrl]);
+            },
+            error: (error) => {
+              alert(error.error.message);
+            },
+            complete: () => {
+            }
+          });
       } else {
         alert('las contraseñas no coinciden');
         this.password_match = false;

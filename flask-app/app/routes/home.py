@@ -1,6 +1,5 @@
 """App views."""
-from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
-from flask_login import logout_user, login_required, current_user
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt, get_jwt_identity
 from datetime import datetime, timedelta
 import pytz
@@ -9,7 +8,7 @@ import pytz
 from app.extensions import db, jwt, login_manager
 from app.forms import LoginForm, RegisterForm
 from app.models import User
-from app.services.user import authenticate
+from app.services.user import authenticate, register_new
 from app.services.pushover_notifications import send_noti
 
 home_bp = Blueprint('home', __name__)
@@ -30,6 +29,7 @@ def load_user(user_id):
 
 @home_bp.route('/login', methods=['POST'])
 def login():
+    # User login
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -49,7 +49,6 @@ def login():
 @jwt_required()
 def logout():
     # Logout.
-    logout_user() # Deprecated, soon removed
     jti = get_jwt()['jti']
     blacklist.add(jti)
     return jsonify(message='Logged out successfully'), 200
@@ -62,33 +61,16 @@ def auth():
     return jsonify(user), 200
 
 
-@home_bp.route('/register/', methods=['GET', 'POST'])
+@home_bp.route('/register', methods=['POST'])
 def register():
     # Register new user.
-    form = RegisterForm()
-
-    if request.method == 'POST' and form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        # Check if a user with the same username existing_user
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            flash ('El nombre de usuario ya está en uso.\nPor favor, elige otro.', 'danger')
-            return redirect(url_for('home.register'))
-
-        # Creates the new user instance and set password
-        new_user = User(username=username)
-        new_user.set_password(password)
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        flash('¡Te has registrado correctamente! Ahora puedes iniciar sesión.', 'success')
-        
-        # Send notifitacion
-        message = f"{username} se ha registrado en la web."
-        send_noti(message, username)
-        return redirect(url_for('home.login'))
-
-    return render_template('register.html', form=form)
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    
+    status = register_new(username, password)
+    
+    if status == 200:
+        return jsonify(message='Registered successfully'), 200
+    elif status == 409:
+        return jsonify(message='This user already exists'), 409
