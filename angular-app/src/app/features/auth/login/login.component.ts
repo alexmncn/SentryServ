@@ -6,12 +6,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { trigger, style, transition, animate } from '@angular/animations';
 
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { LoadingOverlayComponent } from '../../../shared/loading-overlay/loading-overlay.component';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, ReactiveFormsModule],
+  imports: [RouterOutlet, CommonModule, ReactiveFormsModule, LoadingOverlayComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   animations: [
@@ -33,6 +34,11 @@ export class LoginComponent {
 
   defaultRedirectRoute = '/home';
 
+  // loading overlay
+  isLoading = false;
+  loadingInfo = '';
+
+
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
     this.loginForm = this.fb.group({
@@ -43,11 +49,12 @@ export class LoginComponent {
 
   sendLogin() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
+      this.isLoading = true;
+      this.loadingInfo = 'Proce sando...';
+
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe({
           next: (response) => {
-            console.log(response);
             // Save the token with AuthService
             this.authService.storeToken(response.token, response.expires_at);
             this.authService.setUsername(response.username);
@@ -55,14 +62,15 @@ export class LoginComponent {
             // redirect
             const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
             this.router.navigate([redirectUrl]);
+            this.isLoading = false;
           },
           error: (error) => {
-            alert(error.error.message);
+            console.log(error.error.message);
+            this.isLoading = false;
           },
           complete: () => {
           }
         });
-  
-      }
     }
+  }
 }

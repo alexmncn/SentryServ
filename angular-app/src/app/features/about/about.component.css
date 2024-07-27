@@ -1,11 +1,10 @@
 .primary-text {
-    color: white;
     font-weight: 600;
     font-size: 20px;
 }
 
 .secondary-text {
-    color: #c0c0c0;
+    color: var(--gray-100);
     font-weight: 500;
 }
 
@@ -14,10 +13,6 @@
     font-weight: 500;
 }
 
-.accent-1{
-    color:rgb(181, 170, 255);
-    font-weight: 700;
-}
 
 header {
     top: 0;

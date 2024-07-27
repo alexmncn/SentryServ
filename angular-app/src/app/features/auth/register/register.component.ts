@@ -6,11 +6,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { trigger, style, transition, animate } from '@angular/animations';
 
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, ReactiveFormsModule],
+  imports: [RouterOutlet, CommonModule, ReactiveFormsModule, LoadingOverlayComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   animations: [
@@ -33,6 +34,10 @@ export class RegisterComponent {
 
   defaultRedirectRoute = 'login'
 
+  // loading overlay
+  isLoading = false;
+  loadingInfo = '';
+
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
     this.registerForm = this.fb.group({
@@ -45,17 +50,21 @@ export class RegisterComponent {
   sendRegister() {
     if (this.registerForm.valid) {
       if (this.registerForm.value.password == this.registerForm.value.confirm_password) {
+        this.isLoading = true;
+        this.loadingInfo = 'Procesando...';
+        
         this.authService.register(this.registerForm.value.username, this.registerForm.value.password)
           .subscribe({
             next: (response) => {
               console.log(response);
-              alert(response.message)
+
               // redirect
               const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
               this.router.navigate([redirectUrl]);
             },
             error: (error) => {
               alert(error.error.message);
+              this.isLoading = false;
             },
             complete: () => {
             }

@@ -9,7 +9,7 @@ import { AboutComponent } from './features/about/about.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'about', component: AboutComponent, canActivate: [AuthGuard]},
+    { path: 'about', component: AboutComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
