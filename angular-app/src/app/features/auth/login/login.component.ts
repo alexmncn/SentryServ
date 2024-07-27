@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { trigger, style, transition, animate } from '@angular/animations';
 
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { MessageService } from '../../../core/services/message/message.service';
 import { LoadingOverlayComponent } from '../../../shared/loading-overlay/loading-overlay.component';
 
 
@@ -30,17 +31,19 @@ import { LoadingOverlayComponent } from '../../../shared/loading-overlay/loading
 export class LoginComponent {
   loginForm: FormGroup;
 
-  passwordMinLen = 4;
+  passwordMinLen: number = 4;
 
-  defaultRedirectRoute = '/home';
+  credentialsError: boolean = false;
+
+  defaultRedirectRoute: string = '/home';
 
   // loading overlay
-  isLoading = false;
-  loadingInfo = '';
+  isLoading: boolean = false;
+  loadingInfo: string = '';
 
 
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
+  constructor(private messageService: MessageService, private authService: AuthService, private router: Router, private fb: FormBuilder) { 
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(this.passwordMinLen)]]
@@ -50,7 +53,7 @@ export class LoginComponent {
   sendLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.loadingInfo = 'Proce sando...';
+      this.loadingInfo = 'Procesando...';
 
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe({
@@ -59,13 +62,24 @@ export class LoginComponent {
             this.authService.storeToken(response.token, response.expires_at);
             this.authService.setUsername(response.username);
 
-            // redirect
+            // Show success message
+            this.messageService.showMessage('success', 'Has iniciado sesión');
+
+            // Close loading overlay
+            this.isLoading = false;
+
+            // Redirect
             const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
             this.router.navigate([redirectUrl]);
-            this.isLoading = false;
           },
           error: (error) => {
-            console.log(error.error.message);
+            if (error.status == 401) {
+              this.messageService.showMessage('error', 'Credenciales incorrectas');
+              this.credentialsError = true;
+            } else if (error.status == 0 || error.status == 500) {
+              this.messageService.showMessage('error', 'Error del servidor. Inténtalo de nuevo mas tarde...');
+            }
+
             this.isLoading = false;
           },
           complete: () => {
@@ -73,4 +87,5 @@ export class LoginComponent {
         });
     }
   }
+
 }
