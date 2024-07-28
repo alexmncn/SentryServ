@@ -38,8 +38,8 @@ def register_new(username, password):
     new_user.set_password(password)
 
     # Add new user to database
-    #db.session.add(new_user)
-    #db.session.commit()
+    db.session.add(new_user)
+    db.session.commit()
     
     return 200
 
