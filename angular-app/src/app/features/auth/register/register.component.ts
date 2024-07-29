@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { trigger, style, transition, animate } from '@angular/animations';
 
 import { AuthService } from '../../../core/services/auth/auth.service';
+import { MessageService } from '../../../core/services/message/message.service';
 import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading-overlay.component";
 
 @Component({
@@ -29,17 +30,18 @@ import { LoadingOverlayComponent } from "../../../shared/loading-overlay/loading
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  passwordMinLen = 4;
-  password_match = true;
+  passwordMinLen: number = 4;
+  password_match: boolean = true;
+  credentialsError: boolean = false;
 
-  defaultRedirectRoute = 'login'
+  defaultRedirectRoute: string = 'login'
 
   // loading overlay
-  isLoading = false;
-  loadingInfo = '';
+  isLoading: boolean = false;
+  loadingInfo: string = '';
 
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) { 
+  constructor(private messageService: MessageService, private authService: AuthService, private router: Router, private fb: FormBuilder) { 
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(this.passwordMinLen)]],
@@ -56,24 +58,30 @@ export class RegisterComponent {
         this.authService.register(this.registerForm.value.username, this.registerForm.value.password)
           .subscribe({
             next: (response) => {
-              console.log(response);
+              this.messageService.showMessage('success', 'Te has registrado');
 
               // redirect
               const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
               this.router.navigate([redirectUrl]);
             },
             error: (error) => {
-              alert(error.error.message);
+              if (error.status == 409) {
+                this.messageService.showMessage('error', 'Este usuario ya existe');
+                this.credentialsError = true;
+              } else if (error.status == 0 || error.status == 500) {
+                this.messageService.showMessage('error', 'Error del servidor. Inténtalo de nuevo mas tarde...');
+              }
               this.isLoading = false;
-            },
-            complete: () => {
             }
           });
       } else {
-        alert('las contraseñas no coinciden');
+        this.messageService.showMessage('error','Las contraseñas deben coincidir');
         this.password_match = false;
       }
 
+    } else {
+      this.messageService.showMessage('error','Los datos introducidos no son válidos');
+      document.querySelectorAll('input').forEach(input => { input.classList.add('error');})
     }
   }
 }

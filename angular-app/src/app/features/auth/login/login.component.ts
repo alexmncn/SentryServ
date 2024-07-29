@@ -81,10 +81,11 @@ export class LoginComponent {
             }
 
             this.isLoading = false;
-          },
-          complete: () => {
           }
         });
+    } else {
+      this.messageService.showMessage('error', 'Los datos introducidos no son válidos');
+      document.querySelectorAll('input').forEach(input => { input.classList.add('error');})
     }
   }
 

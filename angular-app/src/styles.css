@@ -13,11 +13,16 @@
     --gray-900: #111111;
     --black: #000000;
 
+    /* Accents */
     --primary-accent-500: #007bff;
     --primary-accent-600: #0056b3;
     --secondary-accent: ;
     --warn-accent: #f34b5c;
     --success-accent: #58a042;
+
+    /*  */
+    --b-radius-1: 4px;
+    --b-radius-2: 8px;
 }
 
 html {

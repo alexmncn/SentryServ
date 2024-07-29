@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class MessageService {
-  defaultDuration: number = 3;
+  defaultDuration: number = 4;
 
   private messageSource = new BehaviorSubject<{type: string, text: string}>({type: '', text: ''});
   currentMessage = this.messageSource.asObservable();
