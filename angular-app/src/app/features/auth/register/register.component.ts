@@ -53,16 +53,19 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       if (this.registerForm.value.password == this.registerForm.value.confirm_password) {
         this.isLoading = true;
-        this.loadingInfo = 'Procesando...';
+        this.loadingInfo = 'Enviando...';
         
         this.authService.register(this.registerForm.value.username, this.registerForm.value.password)
           .subscribe({
             next: (response) => {
-              this.messageService.showMessage('success', 'Te has registrado');
+              this.loadingInfo = 'Procesando...';
+              setTimeout(() => {
+                this.messageService.showMessage('success', 'Te has registrado');
 
-              // redirect
-              const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
-              this.router.navigate([redirectUrl]);
+                // redirect
+                const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
+                this.router.navigate([redirectUrl]);
+              }, 1000);    
             },
             error: (error) => {
               if (error.status == 409) {

@@ -53,24 +53,27 @@ export class LoginComponent {
   sendLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.loadingInfo = 'Procesando...';
+      this.loadingInfo = 'Enviando...';
 
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
         .subscribe({
           next: (response) => {
-            // Save the token with AuthService
-            this.authService.storeToken(response.token, response.expires_at);
-            this.authService.setUsername(response.username);
+            this.loadingInfo = 'Procesando...';
+              // Save the token with AuthService
+              this.authService.storeToken(response.token, response.expires_at);
+              this.authService.setUsername(response.username);
+  
+            setTimeout(() => {
+              // Show success message
+              this.messageService.showMessage('success', 'Has iniciado sesión');
 
-            // Show success message
-            this.messageService.showMessage('success', 'Has iniciado sesión');
-
-            // Close loading overlay
-            this.isLoading = false;
-
-            // Redirect
-            const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
-            this.router.navigate([redirectUrl]);
+              // Close loading overlay
+              this.isLoading = false;
+              
+              // Redirect
+              const redirectUrl = this.authService.redirectUrl || this.defaultRedirectRoute;
+              this.router.navigate([redirectUrl]);
+            }, 1000);
           },
           error: (error) => {
             if (error.status == 401) {

@@ -36,7 +36,7 @@ def register_blueprints(app):
 
 
 def set_CORS(app):
-    CORS(app, origins=['http://localhost:4200'])
+    CORS(app, origins=['http://localhost:4200', 'https://3rm85g3k-64347.uks1.devtunnels.ms'])
     return None
 
 

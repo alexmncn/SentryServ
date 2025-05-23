@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatIcon } from '@angular/material/icon'
+import { MatIcon } from '@angular/material/icon';
 import { trigger, style, transition, animate, state } from '@angular/animations';
 
 import { MessageService } from '../../core/services/message/message.service';
